@@ -1,0 +1,70 @@
+name: astral_wars_1_20_6
+main: com.astralwarsupdated.astral_wars_1_20_6.Plugin
+version: 0.0.1
+api-version: 1.20.6
+authors: ["DashingWindow27"]
+description: Plugin Pack for Astral Wars Server
+commands:
+  register:
+    description: Create a new account with a password
+    usage: /<command> <password>
+    aliases: [r]
+
+  getleapwand:
+    description: Creates a wand that allows you to soar
+    usage: /<command>
+    aliases: [lw]
+
+  mingravity:
+    description: Creates a gravity field around the owner lowering their gravity and buffing them
+    usage: /<command>
+    aliases: [mingrav]
+
+  test:
+    description: Creates a Pulsar Cannon that allows you to beam enemies
+    usage: /<command>
+    aliases: [pc]
+
+  planet:
+    description: Creates a Solar System of damaging Planets that spin around the player
+    usage: /<command>
+    aliases: [pr]
+
+  blackhole:
+    description: Teleports the player to the closest entity within 30 blocks
+    usage: /<command>
+    alias: [bhs]
+
+  rustycopper:
+    description: Creates a sad rusty copper pickaxe
+    usage: /<command>
+    aliases: [rc]
+
+  copper:
+    description: Creates a copper pickaxe
+    usage: /<command>
+    aliases: [cop]
+
+  steel:
+    description: Creates a steel pickaxe
+    usage: /<command>
+    aliases: [st]
+
+  colbalt:
+    description: Creates a colbalt pickaxe
+    usage: /<command>
+    aliases: [col]
+
+  celestial:
+    description: Creates a celestial pickaxe
+    usage: /<command>
+    aliases: [cel]
+
+  customzombie:
+    description: Spawn a custom buff zombie
+    usage: /<command>
+    aliases: [zom]
+
+  gui:
+    description: Gives Gui Item
+    usage: /<command>
