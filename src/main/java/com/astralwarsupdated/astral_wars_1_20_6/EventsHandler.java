@@ -46,14 +46,67 @@ public class EventsHandler implements Listener {
     private static final long COOLDOWN_TIME = 10; // 10 seconds
     private final Map<UUID, Long> lastUseTimes = new HashMap<>();
     private final Map<UUID, Long> holdTasks = new HashMap<>();
-    
+    private final JavaPlugin plugin;
     //public static JavaPlugin plugin = new 
 
 
-    // public EventsHandler() {
-    //     this.plugin = plugin;
-    // }
+    public EventsHandler(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
 
+    //@EventHandler
+    public void circleEffect(Player player) {
+
+        //Player player = event.getPlayer();
+        Vector playerFacing = player.getLocation().getDirection();
+        Location currentLocation = player.getLocation();
+        Location c1 = currentLocation.clone();
+        double circleRadius = 10.0;
+
+
+        for (double angle = 0 ; angle <= 2*Math.PI ; angle+= Math.PI / 24) { //Angular Speed - Math.PI / 24
+            //double var1 = (Math.cos(x)*5);
+            //double var2 = (Math.sin(x)*5);
+
+            double x = c1.getX() + (circleRadius * Math.cos(angle));
+            double z = c1.getZ() + (circleRadius * Math.sin(angle));
+            
+           
+            if (angle >= 2*Math.PI) {
+                angle = 0;
+
+
+            }
+
+
+            player.sendMessage("hey" + angle);
+
+
+            //Vector position1 = new Vector(x, 0, z);
+            Location particleLocation = new Location(c1.getWorld(), x, c1.getY(), z);
+
+           //rotateAroundAxis()
+
+            c1.getWorld().spawnParticle(Particle.HEART, particleLocation, 1);
+        }
+
+    }
+
+    //@EventHandler
+    public void planetRunnable(Player player) {
+
+        final Player players = player;
+        
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // Code to be executed after the delay
+                circleEffect(players);
+                Bukkit.getLogger().info("This message is printed after a delay.");
+            }
+        }.runTaskLater(plugin, 100L); // 100L is the delay in ticks (100 ticks = 5 seconds)
+
+    }
 
     @EventHandler
     public void onLeaveBed(PlayerBedLeaveEvent event) {
@@ -267,42 +320,94 @@ public class EventsHandler implements Listener {
 
 
             
-            if ((event.getAction().toString().contains("RIGHT")) && (meta.getDisplayName().equals("Orbital Planet Strike"))) {
+            // if ((event.getAction().toString().contains("RIGHT")) && (meta.getDisplayName().equals("Orbital Planet Strike"))) {
                
                
                 
-                    Vector playerFacing = player.getLocation().getDirection();
-                    Location currentLocation = player.getLocation();
-                    Location c1 = currentLocation.clone();
-                    double circleRadius = 10.0;
+            //         Vector playerFacing = player.getLocation().getDirection();
+            //         Location currentLocation = player.getLocation();
+            //         Location c1 = currentLocation.clone();
+            //         double circleRadius = 10.0;
 
 
-                    for (double x = 0 ; x <= 2*Math.PI ; x+= Math.PI / 24) { //Angular Speed - Math.PI / 24
-                        //double var1 = (Math.sin(x)*5);
-                        //double var2 = (Math.cos(x)*5);
-                        double var3 = (Math.tan(x)) *5;
+            //         for (double angle = 0 ; angle <= 2*Math.PI ; angle+= Math.PI / 24) { //Angular Speed - Math.PI / 24
+            //             //double var1 = (Math.cos(x)*5);
+            //             //double var2 = (Math.sin(x)*5);
+
+            //             double x = c1.getX() + (circleRadius * Math.cos(angle));
+            //             double z = c1.getZ() + (circleRadius * Math.sin(angle));
+                        
                        
-                        //Vector position1 = new Vector(var1, 0, var2);
+            //             if (angle >= 2*Math.PI) {
+            //                 angle = 0;
 
 
-                       //rotateAroundAxis()
+            //             }
 
 
-                        //c1.getWorld().spawnParticle(Particle.HEART, c1.getDirection().add(position1), 5);
-                        //c1.getDirection().multiply(var3);
-                        c1.getWorld().spawnParticle(Particle.HEART, c1.add(c1.getDirection().multiply(var3)), 5);
+            //             player.sendMessage("hey" + angle);
 
 
-                        if (x >= 2*Math.PI) {
-                            x = 0;
+            //             //Vector position1 = new Vector(x, 0, z);
+            //             Location particleLocation = new Location(c1.getWorld(), x, c1.getY(), z);
+
+            //            //rotateAroundAxis()
+
+            //             c1.getWorld().spawnParticle(Particle.HEART, particleLocation, 1);
 
 
-                        }
 
 
-                        player.sendMessage("" + x);
 
-                    }
+
+
+
+            //             //straight attack
+            //             // double var3 = (Math.tan(x)) *5;
+            //             // c1.getWorld().spawnParticle(Particle.HEART, c1.add(c1.getDirection().multiply(var3)), 5);
+
+
+            //             // if (x >= 2*Math.PI) {
+            //             //     x = 0;
+
+
+            //             // }
+
+
+            //             // player.sendMessage("" + x);
+
+            //         }
+
+                    if ((event.getAction().toString().contains("RIGHT")) && (meta.getDisplayName().equals("Orbital Planet Strike"))) {
+               
+               
+                        planetRunnable(player);
+                
+
+    
+    
+    
+    
+    
+    
+    
+    
+                            //straight attack
+                            // double var3 = (Math.tan(x)) *5;
+                            // c1.getWorld().spawnParticle(Particle.HEART, c1.add(c1.getDirection().multiply(var3)), 5);
+    
+    
+                            // if (x >= 2*Math.PI) {
+                            //     x = 0;
+    
+    
+                            // }
+    
+    
+                            // player.sendMessage("" + x);
+    
+                    
+
             }
 
 
