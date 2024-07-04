@@ -27,6 +27,7 @@ import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -47,7 +48,14 @@ public class EventsHandler implements Listener {
     private final Map<UUID, Long> lastUseTimes = new HashMap<>();
     private final Map<UUID, Long> holdTasks = new HashMap<>();
     private final JavaPlugin plugin;
+    
+    double angle = 0;
     //public static JavaPlugin plugin = new 
+    //private org.bukkit.entity.Entity armorStand1;
+    //private org.bukkit.entity.Entity armorStand2;
+    //private org.bukkit.entity.Entity armorStand3;
+
+
 
 
     public EventsHandler(JavaPlugin plugin) {
@@ -55,39 +63,165 @@ public class EventsHandler implements Listener {
     }
 
     //@EventHandler
-    public void circleEffect(Player player) {
+    @SuppressWarnings("deprecation")
+    public ArmorStand armorStandHandler(Player player) {
+       
+        Location c1 = player.getLocation();
+        ArmorStand armorStand1 = (ArmorStand) c1.getWorld().spawnEntity(c1, EntityType.ARMOR_STAND);
+        armorStand1.setCustomName("RemoveMe");
+        armorStand1.setCustomNameVisible(false);
+        armorStand1.setVisible(false);
+        armorStand1.setBasePlate(false);
+        armorStand1.setArms(true);
+        armorStand1.setItemInHand(new ItemStack(Material.DIAMOND_SWORD));
+
+        return armorStand1;
+    }
+    @SuppressWarnings("deprecation")
+    public ArmorStand armorStandHandler2(Player player) {
+       
+        Location c1 = player.getLocation();
+
+        ArmorStand armorStand2 = (ArmorStand) c1.getWorld().spawnEntity(c1, EntityType.ARMOR_STAND);
+        armorStand2.setCustomName("RemoveMe");
+        armorStand2.setCustomNameVisible(false);
+        armorStand2.setVisible(false);
+        armorStand2.setBasePlate(false);
+        armorStand2.setArms(true);
+        armorStand2.setItemInHand(new ItemStack(Material.DIAMOND_SWORD));
+
+        return armorStand2;
+    }
+    @SuppressWarnings("deprecation")
+    public ArmorStand armorStandHandler3(Player player) {
+       
+        Location c1 = player.getLocation();
+
+        ArmorStand armorStand3 = (ArmorStand) c1.getWorld().spawnEntity(c1, EntityType.ARMOR_STAND);
+        armorStand3.setCustomName("RemoveMe");
+        armorStand3.setCustomNameVisible(false);
+        armorStand3.setVisible(false);
+        armorStand3.setBasePlate(false);
+        armorStand3.setArms(true);
+        armorStand3.setItemInHand(new ItemStack(Material.DIAMOND_SWORD));
+        return armorStand3;
+    }
+    
+    @SuppressWarnings("deprecation")
+    public void circleEffect(Player player, ArmorStand a1, ArmorStand a2, ArmorStand a3) {
 
         //Player player = event.getPlayer();
         Vector playerFacing = player.getLocation().getDirection();
         Location currentLocation = player.getLocation();
         Location c1 = currentLocation.clone();
-        double circleRadius = 10.0;
+        double circleRadius = 5.0;
+        //ArmorStand armorStand1 = null;
+        //ArmorStand armorStand2 = null;
+        //ArmorStand armorStand3 = null;
+
+        // ArmorStand armorStand1 = (ArmorStand) c1.getWorld().spawnEntity(currentLocation, EntityType.ARMOR_STAND);
+        // ArmorStand armorStand2 = (ArmorStand) c1.getWorld().spawnEntity(currentLocation, EntityType.ARMOR_STAND);
+        // ArmorStand armorStand3 = (ArmorStand) c1.getWorld().spawnEntity(currentLocation, EntityType.ARMOR_STAND);
 
 
-        for (double angle = 0 ; angle <= 2*Math.PI ; angle+= Math.PI / 24) { //Angular Speed - Math.PI / 24
+        //for (angle = 0 ; angle <= 2*Math.PI ; angle+= Math.PI / 24) { //Angular Speed - Math.PI / 24
             //double var1 = (Math.cos(x)*5);
             //double var2 = (Math.sin(x)*5);
 
             double x = c1.getX() + (circleRadius * Math.cos(angle));
             double z = c1.getZ() + (circleRadius * Math.sin(angle));
             
+            double x2 = c1.getX() + (circleRadius * Math.cos((Math.PI/1.5) + angle));
+            double z2 = c1.getZ() + (circleRadius * Math.sin((Math.PI/1.5) + angle));
+
+            double x3 = c1.getX() + (circleRadius * Math.cos((Math.PI/.75) + angle));
+            double z3 = c1.getZ() + (circleRadius * Math.sin((Math.PI/.75) + angle));
            
-            if (angle >= 2*Math.PI) {
-                angle = 0;
 
 
-            }
 
-
-            player.sendMessage("hey" + angle);
+            player.sendMessage("Angle: " + angle);
 
 
             //Vector position1 = new Vector(x, 0, z);
             Location particleLocation = new Location(c1.getWorld(), x, c1.getY(), z);
 
+            Location particleLocation2 = new Location(c1.getWorld(), x2, c1.getY(), z2);
+
+            Location particleLocation3 = new Location(c1.getWorld(), x3, c1.getY(), z3);
+
            //rotateAroundAxis()
 
-            c1.getWorld().spawnParticle(Particle.HEART, particleLocation, 1);
+            // c1.getWorld().spawnParticle(Particle.HEART, particleLocation, 1);
+            // c1.getWorld().spawnParticle(Particle.HEART, particleLocation2, 1);
+            // c1.getWorld().spawnParticle(Particle.HEART, particleLocation3, 1);
+
+            // for (org.bukkit.entity.Entity entity : player.getLocation().getWorld().getEntities()) {
+            
+            //     if (entity instanceof LivingEntity) {
+            //         LivingEntity livingEntity = (LivingEntity) entity;
+            //         if ("RemoveMe".equals(livingEntity.getCustomName())) {
+                        a1.teleport(particleLocation);
+                        a2.teleport(particleLocation2);
+                        a3.teleport(particleLocation3);
+                    //}
+                    // else {
+                    //     ArmorStand armorStand1 = (ArmorStand) c1.getWorld().spawnEntity(particleLocation, EntityType.ARMOR_STAND);
+                    //     armorStand1.setCustomName("RemoveMe");
+                    //     armorStand1.setCustomNameVisible(false);
+                    //     armorStand1.setVisible(false);
+                    //     armorStand1.setBasePlate(false);
+                    //     armorStand1.setArms(true);
+                    //     armorStand1.setItemInHand(new ItemStack(Material.DIAMOND_SWORD));
+                    //     ArmorStand armorStand2 = (ArmorStand) c1.getWorld().spawnEntity(particleLocation2, EntityType.ARMOR_STAND);
+                    //     armorStand2.setCustomName("RemoveMe");
+                    //     armorStand2.setCustomNameVisible(false);
+                    //     armorStand2.setVisible(false);
+                    //     armorStand2.setBasePlate(false);
+                    //     armorStand2.setArms(true);
+                    //     armorStand2.setItemInHand(new ItemStack(Material.DIAMOND_SWORD));
+                    //     ArmorStand armorStand3 = (ArmorStand) c1.getWorld().spawnEntity(particleLocation3, EntityType.ARMOR_STAND);
+                    //     armorStand3.setCustomName("RemoveMe");
+                    //     armorStand3.setCustomNameVisible(false);
+                    //     armorStand3.setVisible(false);
+                    //     armorStand3.setBasePlate(false);
+                    //     armorStand3.setArms(true);
+                    //     armorStand3.setItemInHand(new ItemStack(Material.DIAMOND_SWORD));
+                    // }
+                //}
+            //}
+                
+
+            
+
+            //if (armorStand1 != null) {
+            
+
+            
+
+            
+            //}
+            if (angle >= 2*Math.PI) {
+                angle = 0;
+
+
+            }
+            
+            angle += Math.PI /48;
+        //}
+
+    }
+
+    public void entityChecker(Player player) {
+        
+        for (org.bukkit.entity.Entity entity : player.getLocation().getWorld().getEntities()) {
+            
+            if (entity instanceof LivingEntity) {
+                LivingEntity livingEntity = (LivingEntity) entity;
+                if ("RemoveMe".equals(livingEntity.getCustomName())) {
+                        livingEntity.remove();
+                }
+            }
         }
 
     }
@@ -96,16 +230,25 @@ public class EventsHandler implements Listener {
     public void planetRunnable(Player player) {
 
         final Player players = player;
-        
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                // Code to be executed after the delay
-                circleEffect(players);
-                Bukkit.getLogger().info("This message is printed after a delay.");
-            }
-        }.runTaskLater(plugin, 100L); // 100L is the delay in ticks (100 ticks = 5 seconds)
+        final ArmorStand armorStand1 = armorStandHandler(players);
+        final ArmorStand armorStand2 = armorStandHandler(players);
+        final ArmorStand armorStand3 = armorStandHandler(players);
+        for (int i= 0; i < 96; i++) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
 
+                    
+                    //entityChecker(players);
+                    // Code to be executed after the delay
+                    circleEffect(players, armorStand1, armorStand2, armorStand3);
+                    //Bukkit.getLogger().info("This message is printed after a delay.");
+                }
+            }.runTaskLater(plugin, i); // 100L is the delay in ticks (100 ticks = 5 seconds)
+            
+        }
+        //Deletes Armor Stand entities from previous runnable
+        //entityChecker(players);
     }
 
     @EventHandler
@@ -156,6 +299,22 @@ public class EventsHandler implements Listener {
 
      }
 
+    //  @EventHandler
+    //  public void PlayerMoveEvent(Player player) {
+
+    //     for (org.bukkit.entity.Entity entity : player.getLocation().getWorld().getEntities()) {
+            
+    //         if (entity instanceof LivingEntity) {
+    //             LivingEntity livingEntity = (LivingEntity) entity;
+    //             if ("RemoveMe".equals(livingEntity.getCustomName())) {
+                        
+                    
+
+    //             }
+    //         }
+    //     }
+
+    //  }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -230,7 +389,7 @@ public class EventsHandler implements Listener {
                     currentLocation.add(currentLocation.getDirection().multiply(1));
 
 
-                    currentLocation.getWorld().spawnParticle(Particle.DRAGON_BREATH, currentLocation, 5); // 10 flame particles
+                    currentLocation.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, currentLocation, 5); // 10 flame particles
                    
                    
 

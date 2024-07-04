@@ -155,7 +155,7 @@ public class Weapons {
     }
 
     private static void minorgravityfield() {
-        ItemStack item = new ItemStack(Material.ECHO_SHARD,1);
+        ItemStack item = new ItemStack(Material.AMETHYST_SHARD,1); //Medium Cluster //Large Block // they will all spin upwards
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("Minor Gravity Field");
         List<String> lore = new ArrayList<>();
