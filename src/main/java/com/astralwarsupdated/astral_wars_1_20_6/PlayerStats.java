@@ -236,7 +236,7 @@ public class PlayerStats implements Listener {
 
             updatePlayerStats(player); //Updates stats to make sure damage is accurate
 
-            LivingEntity entity = (LivingEntity) event.getEntity();
+            //LivingEntity entity = (LivingEntity) event.getEntity();
             //ItemStack weapon = player.getInventory().getItemInMainHand();
 
             player.sendMessage("Fall Distance: " + player.getFallDistance());
@@ -244,9 +244,9 @@ public class PlayerStats implements Listener {
             //double critChance = player.getCritChance(player);
             //double critDamage = getCritDamage(player);
 
-            if (entity.getType() == EntityType.ZOMBIE) {
-                entity.setCustomName("Kevin " + entity.getHealth() + " / " + entity.getMaxHealth());
-            }
+            // if (entity != player) {
+            //     entity.setCustomName("Kevin " + entity.getHealth() + " / " + entity.getMaxHealth());
+            // }
             //TEMP SHIT 
 
             // Determine if it's a critical hit

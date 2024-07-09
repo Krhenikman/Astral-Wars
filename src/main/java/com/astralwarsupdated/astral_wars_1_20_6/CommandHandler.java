@@ -14,6 +14,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -116,23 +117,26 @@ public class CommandHandler implements CommandExecutor{
 
             //mob.createCustomZombie();
 
-            Zombie zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
-            // Customize the zombie
-            zombie.setCustomName("Kevin");
-            zombie.setCustomNameVisible(true);
-            zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1000.0); //change health
-            zombie.setHealth(1000.0); // Double the health
+            // Zombie zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+            // // Customize the zombie
+            // zombie.setCustomName("Kevin");
+            // zombie.setCustomNameVisible(true);
+            // zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1000.0); //change health
+            // zombie.setHealth(1000.0); // Double the health
+            CustomMob mob = new CustomMob(player, EntityType.ZOMBIE, "Kevin", 1000.0, Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots);
+
+            mob.createCustomMob();
             //zombie.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).(100.0);
 
             //player.sendMessage(zombie.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).toString());
 
-            AttributeInstance attributeInstance = zombie.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE); //standard damage
-            AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "customDamageModifier", 100, AttributeModifier.Operation.ADD_NUMBER);
-            attributeInstance.addModifier(modifier);
+            // AttributeInstance attributeInstance = zombie.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE); //standard damage
+            // AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "customDamageModifier", 100, AttributeModifier.Operation.ADD_NUMBER);
+            // attributeInstance.addModifier(modifier);
 
-            AttributeInstance attributeInstance2 = zombie.getAttribute(Attribute.GENERIC_GRAVITY); //standard damage
-            AttributeModifier modifier2 = new AttributeModifier(UUID.randomUUID(), "customGravityModifier", 100, AttributeModifier.Operation.ADD_NUMBER);
-            attributeInstance2.addModifier(modifier2);
+            // AttributeInstance attributeInstance2 = zombie.getAttribute(Attribute.GENERIC_GRAVITY); //standard damage
+            // AttributeModifier modifier2 = new AttributeModifier(UUID.randomUUID(), "customGravityModifier", 100, AttributeModifier.Operation.ADD_NUMBER);
+            // attributeInstance2.addModifier(modifier2);
             //zombie.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(100.0);
 
 
@@ -146,7 +150,7 @@ public class CommandHandler implements CommandExecutor{
             // zombie.getEquipment().setLeggings(Weapons.zomleggings);
             // zombie.getEquipment().setBoots(Weapons.zomboots);
             
-            zombieId = zombie.getUniqueId();
+            //zombieId = ((Entity) mob).getUniqueId();
         }
 
         if (command.getName().equalsIgnoreCase("gui")) {

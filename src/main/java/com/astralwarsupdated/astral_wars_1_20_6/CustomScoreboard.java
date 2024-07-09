@@ -2,6 +2,7 @@ package com.astralwarsupdated.astral_wars_1_20_6;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -56,6 +57,25 @@ public class CustomScoreboard {
     }
 
 
+    //   public void entityHealthBar() {
+	// 	 new BukkitRunnable() {
+
+	// 		@SuppressWarnings("deprecation")
+	// 		@Override
+	// 		public void run() {
+    //             Bukkit.spigot().
+	// 			for (LivingEntity e : getServer().getWorld().getLivingEntities()) {
+    //       if (e != null) {
+    //         e.setCustomName(e.getType() + "§c[" + e.getHealth()
+    //              + e.getMaxHealth() + "§c]");
+    //         e.setCustomNameVisible(true);
+    //         LOGGER.info("Health Working!");
+    //       }
+	// 			}
+
+	// 		}
+
+	// 	}.runTaskTimer(plugin, 0, 0);
 
 
 

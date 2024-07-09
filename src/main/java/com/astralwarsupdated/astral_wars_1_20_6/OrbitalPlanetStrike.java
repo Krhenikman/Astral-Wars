@@ -1,8 +1,11 @@
 package com.astralwarsupdated.astral_wars_1_20_6;
 
+import javax.swing.text.html.parser.Entity;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -12,6 +15,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 public class OrbitalPlanetStrike implements Listener {
@@ -27,6 +31,8 @@ public class OrbitalPlanetStrike implements Listener {
     private ArmorStand armorStand1;
     private ArmorStand armorStand2;
     private ArmorStand armorStand3;
+
+
     
     //private ArmorStand[] armorObjects = new ArmorStand[3];
 
@@ -83,7 +89,9 @@ public class OrbitalPlanetStrike implements Listener {
         armorStand.setVisible(false);
         armorStand.setBasePlate(false);
         armorStand.setArms(true);
-        armorStand.setItemInHand(new ItemStack(Material.DIAMOND_SWORD));
+        //armorStand.setItemInHand(new ItemStack(Material.OCHRE_FROGLIGHT));
+        armorStand.setHeadPose((new EulerAngle(90, 90, 90)));
+        armorStand.setHelmet(new ItemStack(Material.OCHRE_FROGLIGHT));
 
         return armorStand;
     }
@@ -116,16 +124,29 @@ public class OrbitalPlanetStrike implements Listener {
 
 
             //Vector position1 = new Vector(x, 0, z);
-            Location particleLocation = new Location(c1.getWorld(), x, c1.getY(), z);
+            Location particleLocation = new Location(c1.getWorld(), x, c1.getY() -1, z);
 
-            Location particleLocation2 = new Location(c1.getWorld(), x2, c1.getY(), z2);
+            Location particleLocation2 = new Location(c1.getWorld(), x2, c1.getY() -1, z2);
 
-            Location particleLocation3 = new Location(c1.getWorld(), x3, c1.getY(), z3);
+            Location particleLocation3 = new Location(c1.getWorld(), x3, c1.getY() -1, z3);
 
 
             a1.teleport(particleLocation);
             a2.teleport(particleLocation2);
             a3.teleport(particleLocation3);
+
+            // for (org.bukkit.entity.Entity entity : particleLocation.getWorld().getNearbyEntities(particleLocation, 1, 1, 1)) {
+            //     if (player != entity) { // Don't hurt the user of the weapon
+            //         //entity.setLastDamageCause(null); // Reset any other damage causes
+            //         ((Damageable) entity).damage(10, entity); // Apply damage
+                       
+                   
+
+
+                           
+            //     }
+            // } 
+
 
             if (angle >= 2*Math.PI) {
                 angle = 0;
@@ -144,18 +165,14 @@ public class OrbitalPlanetStrike implements Listener {
         // return values;
     }
 
-    public void entityChecker(Player player) {
+    public void entityChecker(ArmorStand armorStand) {
         
-        for (org.bukkit.entity.Entity entity : player.getLocation().getWorld().getEntities()) {
-            
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) entity;
-                if ("RemoveMe".equals(livingEntity.getCustomName())) {
-                        livingEntity.remove();
-                }
+        for (org.bukkit.entity.Entity entity : armorStand.getNearbyEntities(0.5, 0.5, 0.5)) {
+            if (entity != armorStand) {
+                // Handle collision logic here
+                ((Damageable) entity).damage(20, entity); // Apply damage
             }
         }
-
     }
 
     // public ArmorStand[] armorStands(Player player) {
@@ -175,9 +192,9 @@ public class OrbitalPlanetStrike implements Listener {
         // final ArmorStand armorStand1 = armorStandHandler(players); //private
         // final ArmorStand armorStand2 = armorStandHandler(players); //private
         // final ArmorStand armorStand3 = armorStandHandler(players); //private
-        armorStand1 = armorStandHandler(player);
-        armorStand2 = armorStandHandler(player);
-        armorStand3 = armorStandHandler(player);
+        armorStand1 = armorStandHandler(players);
+        armorStand2 = armorStandHandler(players);
+        armorStand3 = armorStandHandler(players);
         // this.armorStand1 = armorStand1;
         // this.armorStand2 = armorStand2;
         // this.armorStand3 = armorStand3;
@@ -186,7 +203,7 @@ public class OrbitalPlanetStrike implements Listener {
         // final ArmorStand armorStand2 = armorStand[1]; //private
         // final ArmorStand armorStand3 = armorStand[2]; //private
         //armorStands(players);
-        for (int i= 0; i <= 384*2; i++) {
+        for (int i= 0; i <= 384; i++) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -196,11 +213,14 @@ public class OrbitalPlanetStrike implements Listener {
                     // Code to be executed after the delay
                     //Object[] circleNums = 
                     circleEffect(players, armorStand1, armorStand2, armorStand3);
-                    angle += Math.PI /(96*2);
+                    entityChecker(armorStand1);
+                    entityChecker(armorStand2);
+                    entityChecker(armorStand3);
+                    angle += Math.PI /(96);
                     //stuff = circleNums;
                     //Bukkit.getLogger().info("This message is printed after a delay.");
                 }
-            }.runTaskLater(plugin, i); // 100L is the delay in ticks (100 ticks = 5 seconds)
+            }.runTaskLater(plugin, i/2); // 100L is the delay in ticks (100 ticks = 5 seconds)
         }
 
             new BukkitRunnable() {
@@ -212,22 +232,22 @@ public class OrbitalPlanetStrike implements Listener {
                     armorStand3.remove();
                     //playerUsingOrbitalPlanetStrike = false;
                 }
-            }.runTaskLater(plugin, (192*4) + 1); // 100L is the delay in ticks (100 ticks = 5 seconds)
+            }.runTaskLater(plugin, (192) + 1); // 100L is the delay in ticks (100 ticks = 5 seconds)
         
         //Deletes Armor Stand entities from previous runnable
         //entityChecker(players);
 
     }
 
-    @EventHandler
-    public void PlayerMoveEvent(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        player.sendMessage(playerUsingOrbitalPlanetStrike + "");
-        if (armorStand1 != null) {
-            player.sendMessage("working");
-            circleEffect(player, armorStand1, armorStand2, armorStand3);
-        }
-    }
+    // @EventHandler
+    // public void PlayerMoveEvent(PlayerMoveEvent event) {
+    //     Player player = event.getPlayer();
+    //     //player.sendMessage(playerUsingOrbitalPlanetStrike + "");
+    //     if (armorStand1 != null) {
+    //         //player.sendMessage("working");
+    //         circleEffect(player, armorStand1, armorStand2, armorStand3);
+    //     }
+    // }
 
     //     Player player = event.getPlayer();
 
