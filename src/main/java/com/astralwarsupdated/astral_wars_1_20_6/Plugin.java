@@ -39,6 +39,7 @@ public class Plugin extends JavaPlugin
 
     //Events
     getServer().getPluginManager().registerEvents(new EventsHandler(instance), this);
+    getServer().getPluginManager().registerEvents(new OrbitalPlanetStrike(instance), this);
     getServer().getPluginManager().registerEvents(new PlayerStats(), this);
     //getServer().getPluginManager().registerEvents(new CustomScoreboard(), this);
 
