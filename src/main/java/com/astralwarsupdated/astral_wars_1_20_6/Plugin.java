@@ -86,6 +86,7 @@ public class Plugin extends JavaPlugin
     getCommand("customzombie").setExecutor(commandHandler);
 
 
+
     
     //player.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(100.0);
     

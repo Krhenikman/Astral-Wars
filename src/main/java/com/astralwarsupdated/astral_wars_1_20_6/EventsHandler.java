@@ -468,7 +468,12 @@ public class EventsHandler implements Listener {
 
             
 
-            // if ((event.getAction().toString().contains("RIGHT_CLICK")) && (meta.getDisplayName().equals("Minor Gravity Field"))) { 
+            if ((event.getAction().toString().contains("RIGHT_CLICK")) && (meta.getDisplayName().equals("Minor Gravity Field"))) {
+
+                GravityField gravityField = new GravityField(plugin);
+                //planetRunnable(player);
+                gravityField.gravityfieldRunnable(player);
+            }
 
             //     Location field = player.getLocation();
             //     for (org.bukkit.entity.Entity entity : field.getWorld().getNearbyEntities(field, 3, 3, 3)) {

@@ -30,6 +30,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerStats implements Listener {
     
@@ -50,7 +51,7 @@ public class PlayerStats implements Listener {
 
     private ItemStack stats;
 
-    
+    public static Plugin plugin = Plugin.getInstance();
 
     //public PlayerStats(ItemStack equipedWeapon) {
     public PlayerStats() {//Double playerGravity, Double playerMaxHealth, Double playerAbsorptionHealth, Double playerAttackDamage, Double playerArmor, Double playerSafeFallDistance, Double playerAttackSpeed, Double playerMovementSpeed) {
@@ -59,6 +60,7 @@ public class PlayerStats implements Listener {
         //Default Parameters that are immediately changed
         this.playerArmor = 0.0; 
         this.playerAttackDamage = 0.0;
+        this.playerGravity = 0.0;
         // gravity = playerGravity;
         // maxhealth = playerMaxHealth;
         // maxabsorption = playerAbsorptionHealth;
@@ -239,7 +241,8 @@ public class PlayerStats implements Listener {
             //LivingEntity entity = (LivingEntity) event.getEntity();
             //ItemStack weapon = player.getInventory().getItemInMainHand();
 
-            player.sendMessage("Fall Distance: " + player.getFallDistance());
+            //player.sendMessage("Fall Distance: " + player.getFallDistance());
+
             // Get player's crit chance and crit damage
             //double critChance = player.getCritChance(player);
             //double critDamage = getCritDamage(player);
@@ -275,10 +278,33 @@ public class PlayerStats implements Listener {
                 player.sendMessage("Not Critical Hit! Damage increased to " + newDamage);
 
             }
+
+            //if (event.getDamager() instanceof Player) {
+                //Player player = (Player) event.getDamager();
+                final LivingEntity entity = (LivingEntity) event.getEntity();
+                final Player players = (Player) event.getDamager();
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            
+                            //ItemStack weapon = player.getInventory().getItemInMainHand();
+                
+                            CustomMob mob = new CustomMob();
+                
+                            //if (entity != player && getName(entity).toString() != null) {
+                                entity.setCustomName("§3" + mob.getName(entity, players) + " §c❤ " + String.format("%.2f", entity.getHealth()) + " / " + String.format("%.2f", entity.getMaxHealth()));
+                        }
+                    }.runTaskLater(plugin, 5); // Update every second (20 ticks)
+                }
+                
+    
+
+                //}
+            //}
         }
         
         
-    }   
+       
 
     //add getter methods to grab stats in a different class
     public double getDefense() {
@@ -291,6 +317,14 @@ public class PlayerStats implements Listener {
 
     public double getStrength() {
         return playerStrength;
+    }
+
+    public double getGravity() {
+        return playerGravity;
+    }
+
+    public void setGravity(Player player, Double multiplier) {
+        player.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.02 * multiplier); //sets the gravity of that given player
     }
 
 

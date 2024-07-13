@@ -57,23 +57,24 @@ public class CustomMob implements Listener{
 
     }
 
+    @SuppressWarnings("deprecation")
     public void createCustomMob() {
             
             LivingEntity customEntity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), mob);
             // Customize the zombie
-            customEntity.setCustomName(name);
-            customEntity.setCustomNameVisible(true);
+            
             //customEntity.setHealth(health); // Double the health
             //Entity meta = zombie.getMetadata();
             //PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
                 // Set custom metadata
-                customEntity.setMetadata("GENERIC_NAME", new FixedMetadataValue(plugin, name));
+            customEntity.setMetadata("GENERIC_NAME", new FixedMetadataValue(plugin, name));
             setAttribute(customEntity, Attribute.GENERIC_MAX_HEALTH, health);
             customEntity.setHealth(health);
             setAttribute(customEntity, Attribute.GENERIC_ATTACK_DAMAGE, 100); //standard damage
             //AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "customDamageModifier", 100, AttributeModifier.Operation.ADD_NUMBER);
             //attributeInstance.addModifier(modifier);
-
+            customEntity.setCustomName("§3" + name + " §c❤ " + String.format("%.2f", customEntity.getHealth()) + " / " + String.format("%.2f", customEntity.getMaxHealth()));
+            customEntity.setCustomNameVisible(true);
             //zombie.setLootTable
             // Set the armor
             // zombie.getEquipment().setHelmet(helmet);
@@ -113,27 +114,27 @@ public class CustomMob implements Listener{
     }
 
 
-    @SuppressWarnings("deprecation")
-    @EventHandler
-    public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+    // @SuppressWarnings("deprecation")
+    // @EventHandler
+    // public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
 
 
         
-        if (event.getDamager() instanceof Player) {
-            Player player = (Player) event.getDamager();
+    //     if (event.getDamager() instanceof Player) {
+    //         Player player = (Player) event.getDamager();
 
             
 
-            LivingEntity entity = (LivingEntity) event.getEntity();
-            //ItemStack weapon = player.getInventory().getItemInMainHand();
+    //         LivingEntity entity = (LivingEntity) event.getEntity();
+    //         //ItemStack weapon = player.getInventory().getItemInMainHand();
 
 
 
-            //if (entity != player && getName(entity).toString() != null) {
-                entity.setCustomName("§3" + getName(entity, player) + " §c❤ " + String.format("%.2f", entity.getHealth()) + " / " + String.format("%.2f", entity.getMaxHealth()));
-            //}
-        }
-    }
+    //         //if (entity != player && getName(entity).toString() != null) {
+    //             entity.setCustomName("§3" + getName(entity, player) + " §c❤ " + String.format("%.2f", entity.getHealth()) + " / " + String.format("%.2f", entity.getMaxHealth()));
+    //         //}
+    //     }
+    // }
 
     // public AttributeInstance getAttribute(Attribute genericGravity) {
     //     // TODO Auto-generated method stub
