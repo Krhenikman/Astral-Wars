@@ -69,6 +69,3 @@ commands:
     description: Gives Gui Item
     usage: /<command>
 
-  gravfield:
-    description: Creates a custom gravity field for the player
-    usage: /<command>

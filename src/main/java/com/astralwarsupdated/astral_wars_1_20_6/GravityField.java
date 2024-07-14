@@ -122,7 +122,7 @@ public class GravityField implements Listener{
 
         }
 
-        for (org.bukkit.entity.Entity entity : c1.getWorld().getNearbyEntities(c1, 3, 3, 3)) {
+        for (org.bukkit.entity.Entity entity : c1.getWorld().getNearbyEntities(c1, 4, 25, 4)) {
             //Location particleLocation = new Location(c1.getWorld(), c1.getX(), c1.getY() -1, c1.getZ());
 
             c1.setYaw(yaw);
