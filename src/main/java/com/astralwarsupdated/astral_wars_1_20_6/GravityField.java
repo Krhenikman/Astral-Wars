@@ -1,5 +1,6 @@
 package com.astralwarsupdated.astral_wars_1_20_6;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -10,6 +11,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EntityType;
@@ -32,6 +35,8 @@ public class GravityField implements Listener{
     private final JavaPlugin plugin;
     
     float yaw = 0;
+    float height = 0;
+    boolean maxHeight = false;
     private boolean playerGravityHalfed = false;
     private boolean playerOutsidething = false;
     private Map<UUID, Boolean> gravityfield = new HashMap<>();
@@ -76,6 +81,8 @@ public class GravityField implements Listener{
         //double circleRadius = 5.0;
         Location c1 = player.getLocation();
 
+        //Location rotatingAmethyst = new Location(c1.getWorld(), c1.getX(), c1.getY() + , c1.getZ());
+
         // double x = c1.getX() + (circleRadius * Math.cos(0));
         // double z = c1.getZ() + (circleRadius * Math.sin(0));
         
@@ -105,48 +112,94 @@ public class GravityField implements Listener{
         return armorStand;
     }
     
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({ "deprecation", "unlikely-arg-type" })
     public void circleGravityBuff(Player player, ArmorStand a1, Location c1, PlayerStats pStats) {
 
 
-        //Location c1 = player.getLocation();
-        //if (org.bukkit.entity.Entity entity : c1.getWorld().getNearbyEntities(c1, 3, 3, 3)
-        //for (Player players : Bukkit.getOnlinePlayers()) {
+
 
         for (Player defaultPlayer : Bukkit.getOnlinePlayers()) {
-                    
+            //UUID modifierUUID = UUID.randomUUID(); // Unique UUID for the modifier        
             UUID playerId = defaultPlayer.getUniqueId();
-            gravityfield.put(playerId, false);
+            //gravityfield.put(playerId, false); //Needs to reset to false to check again if still in the gravity field 
             gravityfield.getOrDefault(playerId, false);
-            
+            //player.sendMessage("first");
 
         }
-
-        for (org.bukkit.entity.Entity entity : c1.getWorld().getNearbyEntities(c1, 4, 25, 4)) {
+        for (Player players : Bukkit.getOnlinePlayers()) {
+        //for (org.bukkit.entity.Entity entity : c1.getWorld().getNearbyEntities(c1, 4, 25, 4)) {
             //Location particleLocation = new Location(c1.getWorld(), c1.getX(), c1.getY() -1, c1.getZ());
 
             c1.setYaw(yaw);
             armorStand.teleport(c1);
-            if (entity == player) { //meaning player is in the gravity field
+            //if (entity == player) { //meaning player is in the gravity field
 
                 
-                for (Player players : Bukkit.getOnlinePlayers()) {
-                    if (entity.getUniqueId() == players.getUniqueId()) { //if any entity is one of the players set there value to true
+                for (org.bukkit.entity.Entity entity : c1.getWorld().getNearbyEntities(c1, 4, 25, 4)) {
+                    //boolean playerFound = false;
+                    if (entity.getUniqueId() == players.getUniqueId() && gravityfield.getOrDefault(players.getUniqueId(), false) == false) { //if any entity is one of the players set there value to true
+                        players.sendMessage("adding attribute");
                         gravityfield.put(players.getUniqueId(), true); //player is in the circle
-                        players.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.01);
-                        players.sendMessage("In gravity field");
-                    }
+                        AttributeInstance attribute = players.getAttribute(Attribute.GENERIC_GRAVITY);
+                        UUID playersUuid = players.getUniqueId();
+                        AttributeModifier modifier = new AttributeModifier(playersUuid, "Gravity_Field_Modifier", -0.50, AttributeModifier.Operation.ADD_SCALAR);
+                        
+                        attribute.addModifier(modifier);
+                        //break;
+                        
+                    }    
+                        
                 }
-            }
+                
+
+                        
+                    //     ////players.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.01);
+                    //     players.sendMessage("In gravity field");
+                    //     player.sendMessage("inside yes");
+                    // }
+                    // player.sendMessage("inside no");
+                
+            //}
         }
 
+        
         for (Player players : Bukkit.getOnlinePlayers()) {
-            if (gravityfield.getOrDefault(players.getUniqueId(), false) == false) {
+            //double distance = players.getLocation().distance(c1);
+            double distanceX = Math.abs(players.getLocation().getX() - (c1.getX()));
+            double distanceZ = Math.abs(players.getLocation().getZ() - (c1.getZ()));
+            //double distance = Math.pow(Math.sqrt(distanceX) + Math.sqrt(distanceZ), 2);
+            if (distanceX > 4 || distanceZ > 4) {
+                //remove attributes
+                gravityfield.put(players.getUniqueId(), false);
+            
 
-                players.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.02);
-                players.sendMessage("Not in gravity field");
+            // if (gravityfield.getOrDefault(players.getUniqueId(), false) == true) {
+            //     player.sendMessage("mhmmm");
+            // }
+                ////players.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.02);
+                UUID playersUuid = players.getUniqueId();
+                AttributeInstance attribute = players.getAttribute(Attribute.GENERIC_GRAVITY);
+                if (attribute != null) {
+                    Collection <AttributeModifier> modifier = attribute.getModifiers();
+                    for (AttributeModifier mod : modifier) {
+                        //players.sendMessage(mod.toString());
+                        if (mod.getName().equals("Gravity_Field_Modifier")) {
+                            if (mod != null) {
+                                //AttributeModifier removeableModifier = mod;
+                                attribute.removeModifier(mod);
+                                players.sendMessage("Not in gravity field mod removed");
+                                break;
+                            }
+                        }
+                    }
+                    
+                
+
+                }
+                // }   
             }
         }
+    }
         
         // if (playerGravityHalfed == true) {
         //     playerGravityHalfed = false;
@@ -154,7 +207,7 @@ public class GravityField implements Listener{
         //     player.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.02);
         //     player.sendMessage("Not in gravity field");
         // }
-    }
+    
 
 
     // public void entityChecker(ArmorStand armorStand) {
@@ -173,7 +226,8 @@ public class GravityField implements Listener{
 
         final Player players = player;
         final Location c1 = player.getLocation();
-        final Location location = new Location(c1.getWorld(), c1.getX(), c1.getY() -1, c1.getZ());
+        
+        
         final PlayerStats playerStats = new PlayerStats();
         final double originalGravity = playerStats.getGravity(); 
         //ArmorStand[] armorStand = armorStands(players);
@@ -183,25 +237,39 @@ public class GravityField implements Listener{
 
 
 
-        for (int i= 0; i <= 30; i++) {
+        for (int i= 0; i <= 150; i++) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
 
                     //playerUsingOrbitalPlanetStrike = true;
                     //players.sendMessage(originalGravity + "");
+                    
+                    Location location = new Location(c1.getWorld(), c1.getX(), c1.getY() -1 + (height), c1.getZ());
                     circleGravityBuff(players, armorStand1, location, playerStats);
                     
                     //entityChecker(armorStand1);
                     if (yaw >= 360) {
                         yaw = 0;
                     }
-
-                    yaw += 18;
+                    if (height == 0) {
+                        maxHeight = false;
+                    }
+                    if (height >= 3 && maxHeight == false) {
+                        maxHeight = true;
+                    }
+                    if (height >= 0 && maxHeight == false) {
+                        height += 0.04;
+                    }
+                    if (height > 0 && maxHeight == true) {
+                        height -= 0.04;
+                        //maxHeight = false;
+                    }
+                    yaw += 7.20;
                     //stuff = circleNums;
                     //Bukkit.getLogger().info("This message is printed after a delay.");
                 }
-            }.runTaskLater(plugin, i*10); // 100L is the delay in ticks (100 ticks = 5 seconds)
+            }.runTaskLater(plugin, i*2); // 100L is the delay in ticks (100 ticks = 5 seconds)
         }
 
             new BukkitRunnable() {
@@ -210,11 +278,34 @@ public class GravityField implements Listener{
 
                     armorStand1.remove();
                     //playerStats.setGravity(players, 1.0);
-                    players.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.02);
-                    //armorStand2.remove();
-                    //armorStand3.remove();
-                    //playerUsingOrbitalPlanetStrike = false;
-                }
+                    //players.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.02);
+
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+
+                            UUID playersUuid = players.getUniqueId();
+                            AttributeInstance attribute = players.getAttribute(Attribute.GENERIC_GRAVITY);
+                            if (attribute != null) {
+                                Collection <AttributeModifier> modifier = attribute.getModifiers();
+                                for (AttributeModifier mod : modifier) {
+                                    //players.sendMessage(mod.toString());
+                                    if (mod.getName().equals("Gravity_Field_Modifier")) {
+                                        if (mod != null) {
+                                            //AttributeModifier removeableModifier = mod;
+                                            attribute.removeModifier(mod);
+                                            players.sendMessage("Gravity field over!");
+                                            break;
+                                        }
+                                    }
+                                }
+                                
+                            
+            
+                            }
+  
+                        }
+                    }
+
+                
             }.runTaskLater(plugin, (300) + 1); // 100L is the delay in ticks (100 ticks = 5 seconds)
         
         //Deletes Armor Stand entities from previous runnable
@@ -251,6 +342,26 @@ public class GravityField implements Listener{
     //         armor3.teleport(loc3);
     //     }
     // }
+        // Method to add a modifier for testing purposes
+        // public void addAttributeModifier(Player player) {
+        //     AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+        //     if (attribute != null) {
+        //         UUID modifierUUID = UUID.randomUUID(); // Unique UUID for the modifier
+        //         AttributeModifier modifier = new AttributeModifier(modifierUUID, "generic.attackDamage", 0.20, AttributeModifier.Operation.ADD_SCALAR);
+        //         attribute.addModifier(modifier);
+        //     }
+        // }
+    
+        // // Method to remove a modifier
+        // public void removeAttributeModifier(Player player, UUID modifierUUID) {
+        //     AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+        //     if (attribute != null) {
+        //         AttributeModifier modifier = attribute.getModifier(modifierUUID);
+        //         if (modifier != null) {
+        //             attribute.removeModifier(modifier);
+        //         }
+        //     }
+        // }
 }
 
 
