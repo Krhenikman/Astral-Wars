@@ -28,11 +28,17 @@ public class CustomMob implements Listener{
     private Player player;
     private EntityType mob;
     private String name;
-    private double health;
+    //private double health;
     private ItemStack helmet;
     private ItemStack chestplate;
     private ItemStack leggings;
     private ItemStack boots;
+    private double health;
+    private double attackDamage;
+    private double scale;
+    private double movementSpeed;
+    private double attackSpeed;
+    
 
     public static Plugin plugin = Plugin.getInstance();
     //public static NamespacedKey key4 = new NamespacedKey(plugin, "GENERIC_NAME");
@@ -43,12 +49,16 @@ public class CustomMob implements Listener{
 
     }
 
-    public CustomMob(Player playerSent, EntityType mobType, String mobName, double mobHealth, ItemStack helm, ItemStack chest, ItemStack leg, ItemStack shoes) {
+    public CustomMob(Player playerSent, EntityType mobType, String mobName, ItemStack helm, ItemStack chest, ItemStack leg, ItemStack shoes, double mobHealth, double mobAttackDamage, double mobScale, double mobMovementSpeed, double mobAttackSpeed) {
 
         player = playerSent;
         mob = mobType;
         name = mobName;
         health = mobHealth;
+        attackDamage = mobAttackDamage;
+        scale = mobScale;
+        movementSpeed = mobMovementSpeed;
+        attackSpeed = mobAttackSpeed;
         helmet = helm;
         chestplate = chest;
         leggings = leg;
@@ -70,7 +80,11 @@ public class CustomMob implements Listener{
             customEntity.setMetadata("GENERIC_NAME", new FixedMetadataValue(plugin, name));
             setAttribute(customEntity, Attribute.GENERIC_MAX_HEALTH, health);
             customEntity.setHealth(health);
-            setAttribute(customEntity, Attribute.GENERIC_ATTACK_DAMAGE, 100); //standard damage
+            setAttribute(customEntity, Attribute.GENERIC_ATTACK_DAMAGE, attackDamage); //standard damage
+            setAttribute(customEntity, Attribute.GENERIC_ATTACK_SPEED, attackSpeed); //standard damage
+            setAttribute(customEntity, Attribute.GENERIC_SCALE, scale); //standard damage
+            setAttribute(customEntity, Attribute.GENERIC_MOVEMENT_SPEED, movementSpeed); //standard damage
+            //setAttribute(customEntity, Attribute.GENERIC_ATTACK_DAMAGE, attackDamage); //standard damage
             //AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "customDamageModifier", 100, AttributeModifier.Operation.ADD_NUMBER);
             //attributeInstance.addModifier(modifier);
             customEntity.setCustomName("§3" + name + " §c❤ " + String.format("%.2f", customEntity.getHealth()) + " / " + String.format("%.2f", customEntity.getMaxHealth()));

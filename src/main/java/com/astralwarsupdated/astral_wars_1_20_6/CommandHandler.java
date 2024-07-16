@@ -123,7 +123,7 @@ public class CommandHandler implements CommandExecutor{
             // zombie.setCustomNameVisible(true);
             // zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1000.0); //change health
             // zombie.setHealth(1000.0); // Double the health
-            CustomMob mob = new CustomMob(player, EntityType.ZOMBIE, "Kevin", 1000.0, Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots);
+            CustomMob mob = new CustomMob(player, EntityType.ZOMBIE, "Kevin", Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots, 1000.0, 25.0, 2, 0.2, 2.0);
 
             mob.createCustomMob();
             //zombie.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).(100.0);

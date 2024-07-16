@@ -365,7 +365,7 @@ public class EventsHandler implements Listener {
 
             //         }
 
-                    if ((event.getAction().toString().contains("RIGHT")) && (meta.getDisplayName().equals("Orbital Planet Strike"))) {
+                    if ((event.getAction().toString().contains("RIGHT")) && (meta.getDisplayName().equals("§bOrbital Planet Strike"))) {
                
                         OrbitalPlanetStrike orbit = new OrbitalPlanetStrike(plugin);
                         //planetRunnable(player);

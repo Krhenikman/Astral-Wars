@@ -147,19 +147,8 @@ public class GravityField implements Listener{
                         attribute.addModifier(modifier);
                         //break;
                         
-                    }    
-                        
+                    }           
                 }
-                
-
-                        
-                    //     ////players.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.01);
-                    //     players.sendMessage("In gravity field");
-                    //     player.sendMessage("inside yes");
-                    // }
-                    // player.sendMessage("inside no");
-                
-            //}
         }
 
         
