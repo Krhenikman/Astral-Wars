@@ -22,6 +22,7 @@ public class Plugin extends JavaPlugin
   public static Logger LOGGER=Logger.getLogger("astral_wars_1_20_6");
   private CommandHandler commandHandler;
   private CustomScoreboard healthbar;
+  private PlayerStats playerRegen;
   //private Weapons exAttributes;
 
   public void onEnable()
@@ -33,8 +34,12 @@ public class Plugin extends JavaPlugin
     //javaInstance = this;
 
     //Runnables
+    playerRegen = new PlayerStats();
+    playerRegen.startRegenTask(); 
     healthbar = new CustomScoreboard(this);
     healthbar.startHealthActionBarTask();
+
+
 
 
     //Events
@@ -51,6 +56,7 @@ public class Plugin extends JavaPlugin
     
     Weapons.init();
     Pickaxes.init();
+    ItemMaterials.init();
 
     //Utility
 

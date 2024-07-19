@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.text.html.parser.Entity;
+
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -21,11 +23,14 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,8 +40,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class PlayerStats implements Listener {
     
     private Double playerGravity;
-    private Double playerCurrentHealth;
+    //private Double playerCurrentHealth;
     private Double playerMaxHealth;
+    private Double playerHealth;
+    private Double playerHealthRegen;
     private Double playerMaxAbsorption;
     private Double playerAttackDamage;
     private Double playerArmor;
@@ -49,9 +56,14 @@ public class PlayerStats implements Listener {
     private Double playerCritChance;
     private Double playerStrength;
 
+    
+
     private ItemStack stats;
 
     public static Plugin plugin = Plugin.getInstance();
+
+   
+
 
     //public PlayerStats(ItemStack equipedWeapon) {
     public PlayerStats() {//Double playerGravity, Double playerMaxHealth, Double playerAbsorptionHealth, Double playerAttackDamage, Double playerArmor, Double playerSafeFallDistance, Double playerAttackSpeed, Double playerMovementSpeed) {
@@ -61,6 +73,10 @@ public class PlayerStats implements Listener {
         this.playerArmor = 0.0; 
         this.playerAttackDamage = 0.0;
         this.playerGravity = 0.0;
+        this.playerHealth = 100.0;
+        this.playerMaxHealth = 100.0;
+        this.playerHealthRegen = 2.0;
+
         // gravity = playerGravity;
         // maxhealth = playerMaxHealth;
         // maxabsorption = playerAbsorptionHealth;
@@ -81,10 +97,15 @@ public class PlayerStats implements Listener {
           playerCritChance = (double) Weapons.getCustomCritChance(itemInHand) + 10.0; //10% Base Crit Chance
           playerCritDamage = (double) Weapons.getCustomCritDamage(itemInHand) + 50.0; //50% Base Crit Damage
           
+          //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, 100));
+          //player.setMetadata("GENERIC_ENTITY_MAX_HEALTH", new FixedMetadataValue(plugin, 100));
+          //player.setMetadata("GENERIC_ENTITY_HEALTH_REGEN", new FixedMetadataValue(plugin, 2));
+          
+          //playerCurrentHealth = player.getHealth();
+          //playerMaxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
 
-          playerCurrentHealth = player.getHealth();
           playerGravity = player.getAttribute(Attribute.GENERIC_GRAVITY).getValue();
-          playerMaxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+          
           playerMaxAbsorption = player.getAttribute(Attribute.GENERIC_MAX_ABSORPTION).getValue();
           playerAttackDamage = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getValue();
           playerArmor = player.getAttribute(Attribute.GENERIC_ARMOR).getValue();  //Unique the armor the player is using
@@ -98,16 +119,19 @@ public class PlayerStats implements Listener {
 
          @EventHandler
      public void onPlayerJoin(PlayerJoinEvent event) {
-         event.setJoinMessage("Bitch");
+         event.setJoinMessage("Coolio");
 
          Player player = event.getPlayer();
          
+         playerHealth = setHealth(player);
+         playerMaxHealth = setMaxHealth(player);
+         playerHealthRegen = setHealthRegen(player);
          
          player.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.02); //sets the gravity of that given player
          playerGravity = player.getAttribute(Attribute.GENERIC_GRAVITY).getValue();
         
-         player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40); //sets the health of that given player
-         playerMaxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+        //  player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40); //sets the health of that given player
+        //  playerMaxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
          
          player.getAttribute(Attribute.GENERIC_MAX_ABSORPTION).setBaseValue(20); //sets the health of that given player
          playerMaxAbsorption = player.getAttribute(Attribute.GENERIC_MAX_ABSORPTION).getValue();
@@ -150,6 +174,132 @@ public class PlayerStats implements Listener {
          //attributeInstance2.addModifier(modifier2);
 
      }
+    public double setHealth(Player player) {
+        //if (entity != null) {
+            for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_HEALTH")) {
+
+                player.sendMessage(value.asString() + "");
+                return value.asDouble(); // or a default value
+
+            }
+            player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, 100.0)); //no value found means that this is the players first join 
+            
+            return 100.0;
+
+    }
+    public double getHealth(Player player) {
+        //if (entity != null) {
+            for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_HEALTH")) {
+
+                //player.sendMessage(value.asString() + "");
+                return value.asDouble(); // or a default value
+
+            }
+            //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, setMaxHealth(player))); //no value found means that this is the players first join 
+            //player.sendMessage("null1");
+            return 100.0;
+
+    }
+    public double setMaxHealth(Player player) {
+        //if (entity != null) {
+            for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_MAX_HEALTH")) {
+
+                //player.sendMessage(value.asString() + "");
+                return value.asDouble(); // or a default value
+
+            }
+            player.setMetadata("GENERIC_ENTITY_MAX_HEALTH", new FixedMetadataValue(plugin, 100.0)); //no value found means that this is the players first join 
+            
+            return 100.0;
+
+    }
+
+    public double getMaxHealth(Player player) {
+        //if (entity != null) {
+            for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_MAX_HEALTH")) {
+
+                //player.sendMessage(value.asString() + "");
+                return value.asDouble(); // or a default value
+
+            }
+            //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, 100)); //no value found means that this is the players first join 
+            //player.sendMessage("null2");
+            return playerMaxHealth;
+
+    }
+
+    public double setHealthRegen(Player player) {
+        //if (entity != null) {
+            for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_HEALTH_REGEN")) {
+
+                //player.sendMessage(value.asString() + "");
+                return value.asDouble(); // or a default value
+
+            }
+            player.setMetadata("GENERIC_ENTITY_HEALTH_REGEN", new FixedMetadataValue(plugin, 2)); //no value found means that this is the players first join 
+            
+            return 2;
+
+    }
+
+    public double getHeathRegen(Player player) {
+        //if (entity != null) {
+            for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_HEALTH_REGEN")) {
+
+                player.sendMessage(value.asString() + "");
+                return value.asDouble(); // or a default value
+
+            }
+            //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, 100)); //no value found means that this is the players first join 
+            //player.sendMessage("null3");
+            return 0;
+
+    }
+
+    public void startRegenTask() {
+        new BukkitRunnable() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public void run() {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (!(player.isDead())) {
+                        if ((getHealth(player)/getMaxHealth(player) <= 0)) { //player dead
+                            player.sendMessage("Muerte");
+                            player.setHealth(0);
+                        }
+
+                        else if(getHealth(player) + getHeathRegen(player) >= getMaxHealth(player)) { //player no longer needs regen
+                            player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getMaxHealth(player))));
+                            player.setHealth((getHealth(player)/getMaxHealth(player)) * player.getMaxHealth());
+                        }
+
+                        else {//(getHealth(player) < getMaxHealth(player)) {
+                            if ((getHealth(player) + getHeathRegen(player)) <= getMaxHealth(player)) {
+                                player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(player) + getHeathRegen(player))));
+                            }
+                            // else {
+                            //     player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getMaxHealth(player)  + getHeathRegen(player))));
+                            // }
+                            player.setHealth((getHealth(player)/getMaxHealth(player)) * player.getMaxHealth());
+                            player.sendMessage(getHealth(player) + " / " + getMaxHealth(player) + " * " + player.getMaxHealth());
+                        }
+                    }
+
+                    //if none is true then players health equals max health
+
+                    // final Player players = player;
+                    // new BukkitRunnable() {
+                    //     @Override
+                    //     public void run() {
+                    //         players.sendMessage("Runnable prob");
+                            
+    
+                        //}
+                    //}.runTaskLater(plugin, 1); // 100L is the delay in ticks (100 ticks = 5 seconds)
+                }
+            }
+        }.runTaskTimer(plugin, 20, 40); // Update every second (20 ticks)
+    }
 
      public void customPlayerStatsGUI(Player event) {
 
@@ -232,54 +382,110 @@ public class PlayerStats implements Listener {
     public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
 
 
-        
-        if (event.getDamager() instanceof Player) {
-            Player player = (Player) event.getDamager();
+        if (event.getDamager() instanceof Player) { //player attacker
+            
+                Player player = (Player) event.getDamager();
+                //Player entity = (Player) event.getEntity();
+                updatePlayerStats(player); //Updates stats to make sure damage is accurate
 
-            updatePlayerStats(player); //Updates stats to make sure damage is accurate
+                Random random = new Random();
+                if (random.nextDouble() * 100 <= playerCritChance) {
 
-            //LivingEntity entity = (LivingEntity) event.getEntity();
-            //ItemStack weapon = player.getInventory().getItemInMainHand();
+                    // Apply critical damage
+                    
+                    double originalDamage = playerAttackDamage;
+                    double newDamage = originalDamage * ((1 + (playerCritDamage/100))) * Math.sqrt(player.getAttackCooldown()) * playerStrength; //ADD BASE STR HERE
+                    
+                    if (event.getEntity() instanceof Player) { //player defender
 
-            //player.sendMessage("Fall Distance: " + player.getFallDistance());
+                        event.setDamage(0);
+                        Player entity = (Player) event.getEntity();
+                        playerHpRunnable(entity);
+                        entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(entity) - newDamage)));
+                        
+                    }
+                    else { //Entity defender
+                        event.setDamage(newDamage);
+                    }
+                    //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(player) - newDamage)));
+                    
+                    player.sendMessage("Critical Hit! Damage increased to " + newDamage);
 
-            // Get player's crit chance and crit damage
-            //double critChance = player.getCritChance(player);
-            //double critDamage = getCritDamage(player);
+                    // final Player players = player;
+                    // new BukkitRunnable() {
+                    //     @Override
+                    //     public void run() {
 
-            // if (entity != player) {
-            //     entity.setCustomName("Kevin " + entity.getHealth() + " / " + entity.getMaxHealth());
-            // }
-            //TEMP SHIT 
+                    //         players.setHealth(playerHealth/playerMaxHealth);
 
-            // Determine if it's a critical hit
-            Random random = new Random();
-            if (random.nextDouble() * 100 < playerCritChance) {
+                    //     }
+                    // }.runTaskLater(plugin, 1); // 100L is the delay in ticks (100 ticks = 5 seconds)
+                    
+                }
 
-                // Apply critical damage
-                //double originalDamage = event.getDamage();
-                double originalDamage = playerAttackDamage;
-                double newDamage = originalDamage * ((1 + (playerCritDamage/100))) * Math.sqrt(player.getAttackCooldown()) * playerStrength; //ADD BASE STR HERE
-                event.setDamage(newDamage);
+                else {
+
+                    // Do not apply critical damage
+                    
+                    double originalDamage = playerAttackDamage;
+                    double newDamage = originalDamage * Math.sqrt(player.getAttackCooldown()) * playerStrength; //ADD BASE STR HERE
+                    
+                    if (event.getEntity() instanceof Player) { //player defender
+                        event.setDamage(0);
+                        Player entity = (Player) event.getEntity();
+                        player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(player) - newDamage)));
+                        playerHpRunnable(entity);
+                    }
+                    else { //Entity defender
+                        event.setDamage(newDamage);
+                    }
+                    //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(player) - newDamage)));
+                    
+                    player.sendMessage("Not Critical Hit! Damage increased to " + newDamage);
+                    //if (event.getEntity() instanceof Player) { //player defender
+                    
+
+                    
+
+                    // //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(player) - newDamage)));
+                    // player.sendMessage("Not Critical Hit! Damage increased to " + newDamage);
+
+                    // final Player players = player;
+                    // new BukkitRunnable() {
+                    //     @Override
+                    //     public void run() {
+
+                    //         players.setHealth(playerHealth/playerMaxHealth);
+
+                    //     }
+                    // }.runTaskLater(plugin, 1); // 100L is the delay in ticks (100 ticks = 5 seconds)
+                }
+        }
+    
+        else { //Entity Attacker on player
+            double newDamage = event.getDamage();
+            
+            if (event.getEntity() instanceof Player) { //player defender
+                event.setDamage(0);
+                Player entity = (Player) event.getEntity();
+                playerHpRunnable(entity);
+                entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(entity) - newDamage)));
                 
-                player.sendMessage("Critical Hit! Damage increased to " + newDamage);
-
             }
-
             else {
-
-                // Apply critical damage
-                
-                double originalDamage = playerAttackDamage;
-                
-                double newDamage = originalDamage * Math.sqrt(player.getAttackCooldown()) * playerStrength;
-                event.setDamage(newDamage);
-                
-                player.sendMessage("Not Critical Hit! Damage increased to " + newDamage);
-
+                event.setDamage(newDamage); //entity defender
             }
+              
+            // Player entity = (Player) event.getEntity();
+            // entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(entity) - event.getDamage())));
+            
+            // playerHpRunnable(entity);
 
-            //if (event.getDamager() instanceof Player) {
+            
+        }
+
+
+            if (event.getEntity() instanceof LivingEntity) {
                 //Player player = (Player) event.getDamager();
                 final LivingEntity entity = (LivingEntity) event.getEntity();
                 final Player players = (Player) event.getDamager();
@@ -296,12 +502,18 @@ public class PlayerStats implements Listener {
                         }
                     }.runTaskLater(plugin, 5); // Update every second (20 ticks)
                 }
-                
+            }
+        
     
 
                 //}
             //}
-        }
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, getMaxHealth(player)));
+    }
+    
         
         
        
@@ -327,7 +539,22 @@ public class PlayerStats implements Listener {
         player.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.02 * multiplier); //sets the gravity of that given player
     }
 
-
+    public void playerHpRunnable(Player player) {
+        final Player players = player;
+        new BukkitRunnable() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public void run() {
+                if ((getHealth(players)/getMaxHealth(players) <= 0)) {
+                    //players.sendMessage("your ded dmubass");
+                    players.setHealth(0);
+                }
+                else {
+                    players.setHealth((getHealth(players)/getMaxHealth(players)) * players.getMaxHealth());
+                }
+            }
+        }.runTaskLater(plugin, 10); // 100L is the delay in ticks (100 ticks = 5 seconds)
+    }
 
 
 

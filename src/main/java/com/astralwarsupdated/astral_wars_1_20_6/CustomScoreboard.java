@@ -37,7 +37,7 @@ public class CustomScoreboard {
                     sendActionBar(player, getStatsMessage(player));
                 }
             }
-        }.runTaskTimer(plugin, 0, 20); // Update every second (20 ticks)
+        }.runTaskTimer(plugin, 20, 20); // Update every second (20 ticks)
     }
 
     @SuppressWarnings("deprecation")
@@ -46,10 +46,13 @@ public class CustomScoreboard {
     }
 
     private String getStatsMessage(Player player) {
-        double health = player.getHealth();
+
+        //double health = player.getHealth();
         @SuppressWarnings("deprecation")
-        double maxHealth = player.getMaxHealth();
+        //double maxHealth = player.getMaxHealth();
         PlayerStats stats = new PlayerStats();
+        double health = stats.getHealth(player);
+        double maxHealth = stats.getMaxHealth(player);
         stats.updatePlayerStats(player);
         //int defense = (int) stats.getDefense();
         //int damage = (int) stats.getDamage();
