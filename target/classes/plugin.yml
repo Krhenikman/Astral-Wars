@@ -65,6 +65,11 @@ commands:
     usage: /<command>
     aliases: [zom]
 
+  customskeleton:
+    description: Spawn a custom buff skeleton
+    usage: /<command>
+    aliases: [skeleton]
+
   gui:
     description: Gives Gui Item
     usage: /<command>

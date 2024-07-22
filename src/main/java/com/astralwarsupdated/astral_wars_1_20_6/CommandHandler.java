@@ -112,32 +112,32 @@ public class CommandHandler implements CommandExecutor{
         if (command.getName().equalsIgnoreCase("customzombie")) {
             
 
-            //CustomMob mob = new CustomMob(player, "Kevin", 100, Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots);
-            
 
-            //mob.createCustomZombie();
-
-            // Zombie zombie = (Zombie) player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
-            // // Customize the zombie
-            // zombie.setCustomName("Kevin");
-            // zombie.setCustomNameVisible(true);
-            // zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(1000.0); //change health
-            // zombie.setHealth(1000.0); // Double the health
             CustomMob mob = new CustomMob(player, EntityType.ZOMBIE, "Kevin", Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots, 1000.0, 25.0, 2, 0.2, 2.0);
 
             mob.createCustomMob();
-            //zombie.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).(100.0);
 
-            //player.sendMessage(zombie.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).toString());
 
-            // AttributeInstance attributeInstance = zombie.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE); //standard damage
-            // AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "customDamageModifier", 100, AttributeModifier.Operation.ADD_NUMBER);
-            // attributeInstance.addModifier(modifier);
 
-            // AttributeInstance attributeInstance2 = zombie.getAttribute(Attribute.GENERIC_GRAVITY); //standard damage
-            // AttributeModifier modifier2 = new AttributeModifier(UUID.randomUUID(), "customGravityModifier", 100, AttributeModifier.Operation.ADD_NUMBER);
-            // attributeInstance2.addModifier(modifier2);
-            //zombie.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(100.0);
+
+            //zombie.setLootTable
+            //Set the armor
+
+            // zombie.getEquipment().setHelmet(Weapons.zomhelmet);
+            // zombie.getEquipment().setChestplate(Weapons.zomchestplate);
+            // zombie.getEquipment().setLeggings(Weapons.zomleggings);
+            // zombie.getEquipment().setBoots(Weapons.zomboots);
+            
+            //zombieId = ((Entity) mob).getUniqueId();
+        }
+
+        if (command.getName().equalsIgnoreCase("customskeleton")) {
+            
+
+
+            CustomMob mob = new CustomMob(player, EntityType.SKELETON, "Kyle", Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots, 1000.0, 15.0, 2, 0.3, 10.0);
+
+            mob.createCustomMob();
 
 
 

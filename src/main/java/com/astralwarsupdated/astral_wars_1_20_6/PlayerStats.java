@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -20,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -310,6 +312,7 @@ public class PlayerStats implements Listener {
         metas.setDisplayName("Stats");
         List<String> lore = new ArrayList<>();
         lore.add("§c❤ Health: " + playerMaxHealth +"\n");
+        lore.add("§4❣ Health Regen: " + playerHealthRegen +"\n");
         lore.add("§c❁ Damage: " + playerAttackDamage +"\n");
         lore.add("§c❁ Strength: " + playerStrength +"\n");
         lore.add("§9☣ Crit Chance: " + playerCritChance + "%" +"\n");
@@ -381,7 +384,7 @@ public class PlayerStats implements Listener {
     @EventHandler
     public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
 
-
+        
         if (event.getDamager() instanceof Player) { //player attacker
             
                 Player player = (Player) event.getDamager();
@@ -485,26 +488,54 @@ public class PlayerStats implements Listener {
         }
 
 
-            if (event.getEntity() instanceof LivingEntity) {
-                //Player player = (Player) event.getDamager();
-                final LivingEntity entity = (LivingEntity) event.getEntity();
-                final Player players = (Player) event.getDamager();
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
+        if (event.getEntity() instanceof LivingEntity) {
+            //Player player = (Player) event.getDamager();
+            final LivingEntity entity = (LivingEntity) event.getEntity();
+            //final Player players = (Player) event.getDamager();
+            new BukkitRunnable() {
+                @Override
+                public void run() {
                             
-                            //ItemStack weapon = player.getInventory().getItemInMainHand();
+                    //ItemStack weapon = player.getInventory().getItemInMainHand();
                 
-                            CustomMob mob = new CustomMob();
+                    CustomMob mob = new CustomMob();
                 
-                            //if (entity != player && getName(entity).toString() != null) {
-                                entity.setCustomName("§3" + mob.getName(entity, players) + " §c❤ " + String.format("%.2f", entity.getHealth()) + " / " + String.format("%.2f", entity.getMaxHealth()));
-                        }
-                    }.runTaskLater(plugin, 5); // Update every second (20 ticks)
+                    //if (entity != player && getName(entity).toString() != null) {
+                    entity.setCustomName("§3" + mob.getName(entity) + " §c❤ " + String.format("%.2f", entity.getHealth()) + " / " + String.format("%.2f", entity.getMaxHealth()));
                 }
-            }
-        
-    
+            }.runTaskLater(plugin, 5); // Update every second (20 ticks)
+        }
+    }
+    // @EventHandler
+    // public void EntityShootBowEvent(EntityShootBowEvent entityShootBowEvent) {
+    //     Entity entity = entityShootBowEvent.getEntity();
+    //      if (entityShootBowEvent.getProjectile() instanceof Arrow) {
+    //                 Arrow arrow = (Arrow) entityShootBowEvent.getProjectile();
+    //     //crit determining
+    //     arrow.setCritical(true);
+    //     //arrow.setKnockbackStrength(10); // Add knockback I
+    //     //arrow.se
+    //     arrow.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+    //      }
+
+    //     //Player player = entityShootBowEvent.();
+    //     if (entity instanceof Player) {
+    //         Player playerEntity = (Player) entity;
+    //         int getArrowCooldown = playerEntity.getArrowCooldown();
+    //         playerEntity.sendMessage(getArrowCooldown + "");
+    //         //entityShootBowEvent.setProjectile(entity);
+    //         //playerEntity.sendMessage( "fuck u");
+    //         playerEntity.setArrowCooldown(1);
+    //     }
+    //     else if (entity instanceof LivingEntity) {
+    //         LivingEntity playerEntity = (LivingEntity) entity;
+    //         int getArrowCooldown = playerEntity.getArrowCooldown();
+    //         playerEntity.sendMessage(getArrowCooldown + "");
+    //         //playerEntity.sendMessage( "fuck u");
+    //         playerEntity.setArrowCooldown(0);
+            
+    //     }
+    // }
 
                 //}
             //}

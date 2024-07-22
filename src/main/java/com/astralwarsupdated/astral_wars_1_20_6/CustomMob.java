@@ -105,11 +105,11 @@ public class CustomMob implements Listener{
         }
     }
 
-    public String getName(Entity entity, Player player) {
+    public String getName(Entity entity) {
         //if (entity != null) {
             for (MetadataValue value : entity.getMetadata("GENERIC_NAME")) {
 
-                player.sendMessage(value.asString() + "");
+                //player.sendMessage(value.asString() + "");
                 return value.asString(); // or a default value
 
             }

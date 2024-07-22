@@ -92,6 +92,8 @@ public class Plugin extends JavaPlugin
     
     getCommand("customzombie").setExecutor(commandHandler);
 
+    getCommand("customskeleton").setExecutor(commandHandler);
+
 
 
     
