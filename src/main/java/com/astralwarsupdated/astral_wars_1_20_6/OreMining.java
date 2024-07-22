@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.event.block.BlockDamageEvent;
@@ -68,7 +69,9 @@ public class OreMining implements Listener{
                 // Check if the block below the player is a magma block
                 if (blockBelow.getType() == Material.MAGMA_BLOCK) {
                     // Set custom damage amount
-                    event.setDamage(10.0); // Example: set damage to 2.0
+                    //event.setDamage(10.0); // Example: set damage to 2.0
+                    PlayerStats playerStats = new PlayerStats();
+                    entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (playerStats.getHealth(player) - 10)));
                 }
             }
         }

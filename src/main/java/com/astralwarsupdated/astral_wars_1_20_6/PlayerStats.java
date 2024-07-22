@@ -378,15 +378,25 @@ public class PlayerStats implements Listener {
             }
         }
      }
+    // @SuppressWarnings("deprecation")
+    // @EventHandler
 
+    // public void EntityDamageByEntityEvents(EntityDamageByEntityEvent event) {
+
+    //     if (event.getDamager() instanceof Arrow) {
+
+    //     }
+     
+    // }
 
     @SuppressWarnings("deprecation")
     @EventHandler
     public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
 
         
-        if (event.getDamager() instanceof Player) { //player attacker
-            
+        if (event.getDamager() instanceof Player || event.getDamager() instanceof Arrow) { //IF THIS ISNT TRUE THAN ITS AN ENTITY LIKE A ZOMBIE
+
+            if (event.getDamager() instanceof Player) { //player attacker
                 Player player = (Player) event.getDamager();
                 //Player entity = (Player) event.getEntity();
                 updatePlayerStats(player); //Updates stats to make sure damage is accurate
@@ -414,15 +424,7 @@ public class PlayerStats implements Listener {
                     
                     player.sendMessage("Critical Hit! Damage increased to " + newDamage);
 
-                    // final Player players = player;
-                    // new BukkitRunnable() {
-                    //     @Override
-                    //     public void run() {
 
-                    //         players.setHealth(playerHealth/playerMaxHealth);
-
-                    //     }
-                    // }.runTaskLater(plugin, 1); // 100L is the delay in ticks (100 ticks = 5 seconds)
                     
                 }
 
@@ -450,62 +452,194 @@ public class PlayerStats implements Listener {
 
                     
 
-                    // //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(player) - newDamage)));
-                    // player.sendMessage("Not Critical Hit! Damage increased to " + newDamage);
 
-                    // final Player players = player;
-                    // new BukkitRunnable() {
-                    //     @Override
-                    //     public void run() {
-
-                    //         players.setHealth(playerHealth/playerMaxHealth);
-
-                    //     }
-                    // }.runTaskLater(plugin, 1); // 100L is the delay in ticks (100 ticks = 5 seconds)
                 }
-        }
-    
-        else { //Entity Attacker on player
-            double newDamage = event.getDamage();
+            }
+
             
+
+            
+            
+
+            if (event.getDamager() instanceof Arrow) {
+                Arrow projectile = (Arrow) event.getDamager();
+                if (projectile.getShooter() instanceof Player) { //player attacker
+                    Player player = (Player) projectile.getShooter();
+                    updatePlayerStats(player); //Updates stats to make sure damage is accurate
+                            
+                
+
+                    Random random = new Random();
+                    if (random.nextDouble() * 100 <= playerCritChance) {
+
+                        // Apply critical damage
+                        
+                        double originalDamage = playerAttackDamage;
+                        double newDamage = originalDamage * ((1 + (playerCritDamage/100))) * playerStrength; //ADD BASE STR HERE
+                        //Math.sqrt(player.getArrowCooldown())
+                        if (event.getEntity() instanceof Player) { //player defender
+
+                            event.setDamage(0);
+                            Player entity = (Player) event.getEntity();
+                            playerHpRunnable(entity);
+                            entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(entity) - newDamage)));
+                            
+                        }
+                        else { //Entity defender
+                            event.setDamage(newDamage);//newDamage);
+
+                        }
+
+                        // if (projectile.getShooter() instanceof Player) {
+                        Player messageReciever = (Player) projectile.getShooter();
+                        messageReciever.sendMessage("Critical Hit! Damage increased to " + newDamage);
+                        //}
+                        //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(player) - newDamage)));
+                        
+                        
+
+                        // final Player players = player;
+                        // new BukkitRunnable() {
+                        //     @Override
+                        //     public void run() {
+
+                        //         players.setHealth(playerHealth/playerMaxHealth);
+
+                        //     }
+                        // }.runTaskLater(plugin, 1); // 100L is the delay in ticks (100 ticks = 5 seconds)
+                        
+                    }
+
+                    else {
+
+                        // Do not apply critical damage
+                        
+                        double originalDamage = playerAttackDamage;
+                        double newDamage = originalDamage * playerStrength; //ADD BASE STR HERE
+                        
+                        if (event.getEntity() instanceof Player) { //player defender
+
+                            event.setDamage(0);
+                            Player entity = (Player) event.getEntity();
+                            playerHpRunnable(entity);
+                            entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(entity) - newDamage)));
+                            
+                        }
+                        else { //Entity defender
+                            event.setDamage(newDamage);
+
+                        }
+
+                        if (projectile.getShooter() instanceof Player) {
+                            Player messageReciever2 = (Player) projectile.getShooter();
+                            messageReciever2.sendMessage("Not Critical Hit! Damage increased to " + newDamage);
+                        }
+                        //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(player) - newDamage)));
+                        
+                    }
+                }    
+                //if (event.getEntity() instanceof Player) { //player defender
+                
+
+                else if (projectile.getShooter() instanceof LivingEntity && !(projectile.getShooter() instanceof Player)) { //Entity Attacker on player
+                    double originalEntityDamage = event.getDamage();
+                    
+                    if (event.getEntity() instanceof Player) { //player defender
+                        event.setDamage(0);
+                        Player entity = (Player) event.getEntity();
+                        playerHpRunnable(entity);
+                        entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(entity) - originalEntityDamage)));
+                        
+                    }
+                    else {
+                        event.setDamage(originalEntityDamage); //entity defender
+                    }
+                    
+                    // Player entity = (Player) event.getEntity();
+                    // entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(entity) - event.getDamage())));
+                    
+                    // playerHpRunnable(entity);
+        
+                    
+                }
+
+
+            
+            }
+
+
+
+            
+
+
+        // else {//if (event.getDamager() instanceof LivingEntity) { //Entity Attacker on player
+        //     double newDamage = event.getDamage();
+            
+        //     if (event.getEntity() instanceof Player) { //player defender
+        //         event.setDamage(0);
+        //         Player entity = (Player) event.getEntity();
+        //         playerHpRunnable(entity);
+        //         entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(entity) - newDamage)));
+                
+        //     }
+        //     else {
+        //         event.setDamage(newDamage); //entity defender
+        //     }
+            
+        //     // Player entity = (Player) event.getEntity();
+        //     // entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(entity) - event.getDamage())));
+            
+        //     // playerHpRunnable(entity);
+
+            
+        // }
+
+
+
+
+
+
+        }
+
+        else {//if (event.getDamager() instanceof LivingEntity && !(event.getDamager() instanceof Player)) { //Entity Attacker on player  SPECIFICALLY FOR MELEE ATKS 
+            double newDamage = event.getDamage();
+                
             if (event.getEntity() instanceof Player) { //player defender
                 event.setDamage(0);
                 Player entity = (Player) event.getEntity();
                 playerHpRunnable(entity);
                 entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(entity) - newDamage)));
-                
+                    
             }
             else {
                 event.setDamage(newDamage); //entity defender
             }
-              
-            // Player entity = (Player) event.getEntity();
-            // entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(entity) - event.getDamage())));
-            
-            // playerHpRunnable(entity);
-
-            
+                
+    
+                
         }
 
 
-        if (event.getEntity() instanceof LivingEntity) {
-            //Player player = (Player) event.getDamager();
-            final LivingEntity entity = (LivingEntity) event.getEntity();
-            //final Player players = (Player) event.getDamager();
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                            
-                    //ItemStack weapon = player.getInventory().getItemInMainHand();
-                
-                    CustomMob mob = new CustomMob();
-                
-                    //if (entity != player && getName(entity).toString() != null) {
-                    entity.setCustomName("§3" + mob.getName(entity) + " §c❤ " + String.format("%.2f", entity.getHealth()) + " / " + String.format("%.2f", entity.getMaxHealth()));
-                }
-            }.runTaskLater(plugin, 5); // Update every second (20 ticks)
-        }
+            if (event.getEntity() instanceof LivingEntity) {
+                //Player player = (Player) event.getDamager();
+                final LivingEntity entity = (LivingEntity) event.getEntity();
+                //final Player players = (Player) event.getDamager();
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                                
+                        //ItemStack weapon = player.getInventory().getItemInMainHand();
+                    
+                        CustomMob mob = new CustomMob();
+                    
+                        //if (entity != player && getName(entity).toString() != null) {
+                        entity.setCustomName("§3" + mob.getName(entity) + " §c❤ " + String.format("%.2f", entity.getHealth()) + " / " + String.format("%.2f", entity.getMaxHealth()));
+                    }
+                }.runTaskLater(plugin, 5); // Update every second (20 ticks)
+            }
+        
     }
+    
     // @EventHandler
     // public void EntityShootBowEvent(EntityShootBowEvent entityShootBowEvent) {
     //     Entity entity = entityShootBowEvent.getEntity();
