@@ -248,7 +248,7 @@ public class PlayerStats implements Listener {
         //if (entity != null) {
             for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_HEALTH_REGEN")) {
 
-                player.sendMessage(value.asString() + "");
+                //player.sendMessage(value.asString() + "");
                 return value.asDouble(); // or a default value
 
             }

@@ -1,9 +1,13 @@
 package com.astralwarsupdated.astral_wars_1_20_6;
 
 
+import java.util.Random;
+
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,7 +39,14 @@ public class OreMining implements Listener{
             event.setCancelled(true);
             player.getInventory().addItem(ItemMaterials.meteoriteOre); //Meteorite Ore
             blockBedrockRunnable(block);
+
             
+            Random random = new Random();
+            if (random.nextDouble() * 100 <= 20) {
+                CustomMob mob = new CustomMob(player, new Location(block.getWorld(), block.getX(), block.getY()+2.0, block.getZ()), EntityType.ZOMBIE, "Meteor Head", Weapons.magmahelmet, Weapons.magmachestplate,Weapons.magmaleggings, Weapons.magmaboots, 1000.0, 15.0, 1, 0.5, 10.0);
+
+                mob.createCustomMob();
+            }
 
         }
     }

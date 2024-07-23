@@ -22,6 +22,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 import org.bukkit.GameMode;
 import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CommandHandler implements CommandExecutor{
@@ -113,7 +114,7 @@ public class CommandHandler implements CommandExecutor{
             
 
 
-            CustomMob mob = new CustomMob(player, EntityType.ZOMBIE, "Kevin", Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots, 1000.0, 25.0, 2, 0.2, 2.0);
+            CustomMob mob = new CustomMob(player, player.getLocation(), EntityType.ZOMBIE, "Kevin", Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots, 1000.0, 25.0, 2, 0.2, 2.0);
 
             mob.createCustomMob();
 
@@ -135,7 +136,29 @@ public class CommandHandler implements CommandExecutor{
             
 
 
-            CustomMob mob = new CustomMob(player, EntityType.SKELETON, "Kyle", Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots, 1000.0, 15.0, 2, 0.3, 10.0);
+            CustomMob mob = new CustomMob(player, player.getLocation(), EntityType.SKELETON, "Kyle", Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots, 1000.0, 15.0, 2, 0.3, 10.0);
+
+            mob.createCustomMob();
+
+
+
+
+            //zombie.setLootTable
+            //Set the armor
+
+            // zombie.getEquipment().setHelmet(Weapons.zomhelmet);
+            // zombie.getEquipment().setChestplate(Weapons.zomchestplate);
+            // zombie.getEquipment().setLeggings(Weapons.zomleggings);
+            // zombie.getEquipment().setBoots(Weapons.zomboots);
+            
+            //zombieId = ((Entity) mob).getUniqueId();
+        }
+
+        if (command.getName().equalsIgnoreCase("customMeteorHead")) {
+            
+
+
+            CustomMob mob = new CustomMob(player, player.getLocation(), EntityType.ZOMBIE, "Meteor Head", Weapons.magmahelmet, Weapons.magmachestplate,Weapons.magmaleggings, Weapons.magmaboots, 1000.0, 15.0, 1.5, 0.5, 10.0);
 
             mob.createCustomMob();
 

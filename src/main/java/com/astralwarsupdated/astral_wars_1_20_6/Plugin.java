@@ -94,6 +94,7 @@ public class Plugin extends JavaPlugin
 
     getCommand("customskeleton").setExecutor(commandHandler);
 
+    getCommand("customMeteorHead").setExecutor(commandHandler);
 
 
     

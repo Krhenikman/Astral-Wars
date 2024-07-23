@@ -3,6 +3,7 @@ package com.astralwarsupdated.astral_wars_1_20_6;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -26,6 +27,7 @@ import org.bukkit.persistence.PersistentDataType;
 public class CustomMob implements Listener{
     
     private Player player;
+    private Location location;
     private EntityType mob;
     private String name;
     //private double health;
@@ -49,9 +51,10 @@ public class CustomMob implements Listener{
 
     }
 
-    public CustomMob(Player playerSent, EntityType mobType, String mobName, ItemStack helm, ItemStack chest, ItemStack leg, ItemStack shoes, double mobHealth, double mobAttackDamage, double mobScale, double mobMovementSpeed, double mobAttackSpeed) {
+    public CustomMob(Player playerSent,Location loc, EntityType mobType, String mobName, ItemStack helm, ItemStack chest, ItemStack leg, ItemStack shoes, double mobHealth, double mobAttackDamage, double mobScale, double mobMovementSpeed, double mobAttackSpeed) {
 
         player = playerSent;
+        location = loc;
         mob = mobType;
         name = mobName;
         health = mobHealth;
@@ -70,7 +73,7 @@ public class CustomMob implements Listener{
     @SuppressWarnings("deprecation")
     public void createCustomMob() {
             
-            LivingEntity customEntity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), mob);
+            LivingEntity customEntity = (LivingEntity) player.getWorld().spawnEntity(location, mob);
             // Customize the zombie
             
             //customEntity.setHealth(health); // Double the health
@@ -91,10 +94,10 @@ public class CustomMob implements Listener{
             customEntity.setCustomNameVisible(true);
             //zombie.setLootTable
             // Set the armor
-            // zombie.getEquipment().setHelmet(helmet);
-            // zombie.getEquipment().setHelmet(chestplate);
-            // zombie.getEquipment().setHelmet(leggings);
-            // zombie.getEquipment().setHelmet(boots);
+            customEntity.getEquipment().setHelmet(helmet);
+            customEntity.getEquipment().setChestplate(chestplate);
+            customEntity.getEquipment().setLeggings(leggings);
+            customEntity.getEquipment().setBoots(boots);
             //return customEntity;
     }
     

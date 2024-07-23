@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public class Weapons {
 
@@ -29,6 +31,10 @@ public class Weapons {
     public static ItemStack zomchestplate;
     public static ItemStack zomleggings;
     public static ItemStack zomboots;
+    public static ItemStack magmahelmet;
+    public static ItemStack magmachestplate;
+    public static ItemStack magmaleggings;
+    public static ItemStack magmaboots;
     public static ItemStack statgui;
 
     // Add custom metadata using the plugin instance
@@ -54,6 +60,10 @@ public class Weapons {
         customchest();
         customleg();
         customboot();
+        custommagmahelm();
+        custommagmachest();
+        custommagmaleg();
+        custommagmaboot();
         customStatgui();
 
     }
@@ -198,7 +208,7 @@ public class Weapons {
     private static void customhelm() {
         ItemStack item = new ItemStack(Material.DIAMOND_HELMET,1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("&2Zombie Helmet");
+        meta.setDisplayName("§2Zombie Helmet");
         // List<String> lore = new ArrayList<>();
         // lore.add("§fChange your gravity and give yourself buffs!");
         // lore.add("§c45 Second Cooldown");
@@ -213,7 +223,7 @@ public class Weapons {
     private static void customchest() {
         ItemStack item = new ItemStack(Material.DIAMOND_CHESTPLATE,1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("&2Zombie Chestplate");
+        meta.setDisplayName("§2Zombie Chestplate");
         // List<String> lore = new ArrayList<>();
         // lore.add("§fChange your gravity and give yourself buffs!");
         // lore.add("§c45 Second Cooldown");
@@ -228,7 +238,7 @@ public class Weapons {
     private static void customleg() {
         ItemStack item = new ItemStack(Material.DIAMOND_LEGGINGS,1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("&2Zombie Leggings");
+        meta.setDisplayName("§2Zombie Leggings");
         // List<String> lore = new ArrayList<>();
         // lore.add("§fChange your gravity and give yourself buffs!");
         // lore.add("§c45 Second Cooldown");
@@ -243,7 +253,7 @@ public class Weapons {
     private static void customboot() {
         ItemStack item = new ItemStack(Material.DIAMOND_BOOTS,1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("&2Zombie Boots");
+        meta.setDisplayName("§2Zombie Boots");
         // List<String> lore = new ArrayList<>();
         // lore.add("§fChange your gravity and give yourself buffs!");
         // lore.add("§c45 Second Cooldown");
@@ -253,6 +263,70 @@ public class Weapons {
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         item.setItemMeta(meta);
         zomboots = item;
+    }
+
+    private static void custommagmahelm() {
+        ItemStack item = new ItemStack(Material.MAGMA_BLOCK,1);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName("§cMagma Helmet");
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        item.setItemMeta(meta);
+        magmahelmet = item;
+    }
+
+    private static void custommagmachest() {
+        ItemStack item = new ItemStack(Material.LEATHER_CHESTPLATE,1);
+        // Get the ItemMeta for the leather chestplate
+        LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+        meta.setDisplayName("§cMagma Chestplate");
+        // Set the color of the leather chestplate to orange
+        meta.setColor(Color.ORANGE);
+
+        // Apply the ItemMeta to the ItemStack
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        item.setItemMeta(meta);
+        magmachestplate = item;
+    }
+
+    private static void custommagmaleg() {
+        ItemStack item = new ItemStack(Material.LEATHER_LEGGINGS,1);
+        // Get the ItemMeta for the leather chestplate
+        LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+        meta.setDisplayName("§cMagma Leggings");
+        // Set the color of the leather chestplate to orange
+        meta.setColor(Color.ORANGE);
+
+        // Apply the ItemMeta to the ItemStack
+       
+
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        item.setItemMeta(meta);
+        magmaleggings = item;
+    }
+
+    private static void custommagmaboot() {
+        ItemStack item = new ItemStack(Material.LEATHER_BOOTS,1);
+        //ItemMeta meta = item.getItemMeta();
+        
+        // Get the ItemMeta for the leather chestplate
+        LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+        meta.setDisplayName("§cMagma Boots");
+        // Set the color of the leather chestplate to orange
+        meta.setColor(Color.ORANGE);
+
+        // Apply the ItemMeta to the ItemStack
+       
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        item.setItemMeta(meta);
+        magmaboots = item;
     }
 
     private static void customStatgui() {

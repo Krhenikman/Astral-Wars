@@ -70,6 +70,11 @@ commands:
     usage: /<command>
     aliases: [skeleton]
 
+  customMeteorHead:
+    Description: Spawn a custom buff Meteor Head Enemy
+    usage: /<command>
+    aliases: [meteor]
+
   gui:
     description: Gives Gui Item
     usage: /<command>
