@@ -38,6 +38,7 @@ public class OreMining implements Listener{
 
             event.setCancelled(true);
             player.getInventory().addItem(ItemMaterials.meteoriteOre); //Meteorite Ore
+            //molten cores boss drop???
             blockBedrockRunnable(block);
 
             
@@ -47,7 +48,16 @@ public class OreMining implements Listener{
 
                 mob.createCustomMob();
             }
+            if (random.nextDouble() * 100 <= 20) {
+                CustomMob mob = new CustomMob(player, new Location(block.getWorld(), 12,-20,252), EntityType.ZOMBIE, "Molten Fiend", Weapons.magmahelmet, Weapons.magmachestplate,Weapons.magmaleggings, Weapons.magmaboots, 2048.0, 30.0, 2, 0.5, 10.0);
 
+                mob.createCustomMob();
+            }
+
+        }
+        else if (player.isOp() == false){
+            event.setCancelled(true);
+            player.sendMessage("§cYou can't mine that!");
         }
     }
 
@@ -81,7 +91,7 @@ public class OreMining implements Listener{
                 if (blockBelow.getType() == Material.MAGMA_BLOCK) {
                     // Set custom damage amount
                     //event.setDamage(10.0); // Example: set damage to 2.0
-                    PlayerStats playerStats = new PlayerStats();
+                    EntityHealth playerStats = new EntityHealth();
                     entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (playerStats.getHealth(player) - 10)));
                 }
             }

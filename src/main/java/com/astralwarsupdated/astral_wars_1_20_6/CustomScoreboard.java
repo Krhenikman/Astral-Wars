@@ -50,9 +50,10 @@ public class CustomScoreboard {
         //double health = player.getHealth();
         @SuppressWarnings("deprecation")
         //double maxHealth = player.getMaxHealth();
+        EntityHealth healthSys = new EntityHealth();
         PlayerStats stats = new PlayerStats();
-        double health = stats.getHealth(player);
-        double maxHealth = stats.getMaxHealth(player);
+        double health = healthSys.getHealth(player);
+        double maxHealth = healthSys.getMaxHealth(player);
         stats.updatePlayerStats(player);
         //int defense = (int) stats.getDefense();
         //int damage = (int) stats.getDamage();

@@ -80,9 +80,15 @@ public class CustomMob implements Listener{
             //Entity meta = zombie.getMetadata();
             //PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
                 // Set custom metadata
+
             customEntity.setMetadata("GENERIC_NAME", new FixedMetadataValue(plugin, name));
-            setAttribute(customEntity, Attribute.GENERIC_MAX_HEALTH, health);
-            customEntity.setHealth(health);
+            //setAttribute(customEntity, Attribute.GENERIC_MAX_HEALTH, health);
+            //customEntity.setHealth(health);
+            EntityHealth healthval = new EntityHealth();
+            
+            healthval.setMaxHealth(customEntity, health);
+            healthval.setHealth(customEntity);
+            //healthval.setHealthRegen(customEntity, (health / 50.0));
             setAttribute(customEntity, Attribute.GENERIC_ATTACK_DAMAGE, attackDamage); //standard damage
             setAttribute(customEntity, Attribute.GENERIC_ATTACK_SPEED, attackSpeed); //standard damage
             setAttribute(customEntity, Attribute.GENERIC_SCALE, scale); //standard damage
@@ -90,7 +96,7 @@ public class CustomMob implements Listener{
             //setAttribute(customEntity, Attribute.GENERIC_ATTACK_DAMAGE, attackDamage); //standard damage
             //AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "customDamageModifier", 100, AttributeModifier.Operation.ADD_NUMBER);
             //attributeInstance.addModifier(modifier);
-            customEntity.setCustomName("§3" + name + " §c❤ " + String.format("%.2f", customEntity.getHealth()) + " / " + String.format("%.2f", customEntity.getMaxHealth()));
+            customEntity.setCustomName("§3" + name + " §c❤ " + String.format("%.2f", healthval.getHealth(customEntity)) + " / " + String.format("%.2f",  healthval.getMaxHealth(customEntity)));
             customEntity.setCustomNameVisible(true);
             //zombie.setLootTable
             // Set the armor

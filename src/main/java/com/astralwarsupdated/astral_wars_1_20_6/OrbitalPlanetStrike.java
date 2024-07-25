@@ -170,7 +170,7 @@ public class OrbitalPlanetStrike implements Listener {
     public void entityChecker(ArmorStand armorStand) {
         
         for (org.bukkit.entity.Entity entity : armorStand.getNearbyEntities(0.5, 0.5, 0.5)) {
-            if (entity != armorStand) {
+            if (!(entity instanceof ArmorStand) && (entity instanceof LivingEntity)) {
                 // Handle collision logic here
                 ((Damageable) entity).damage(20, entity); // Apply damage
             }
