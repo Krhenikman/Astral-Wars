@@ -47,6 +47,10 @@ public class Weapons {
 
     public static NamespacedKey key3 = new NamespacedKey(plugin, "GENERIC_CRIT_CHANCE");
 
+    public static NamespacedKey key4 = new NamespacedKey(plugin, "GENERIC_ENTITY_MAX_HEALTH_EXTRA");
+
+    public static NamespacedKey key5 = new NamespacedKey(plugin, "GENERIC_ENTITY_DAMAGE_RESISTANCE_EXTRA");
+
 
 
 
@@ -213,6 +217,8 @@ public class Weapons {
         // lore.add("§fChange your gravity and give yourself buffs!");
         // lore.add("§c45 Second Cooldown");
         // meta.setLore(lore);
+
+
         meta.addEnchant(Enchantment.INFINITY, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -284,6 +290,11 @@ public class Weapons {
         // Set the color of the leather chestplate to orange
         meta.setColor(Color.ORANGE);
 
+        PersistentDataContainer dataContainer3 = meta.getPersistentDataContainer();
+        dataContainer3.set(key4, PersistentDataType.DOUBLE, 20.0);
+        PersistentDataContainer dataContainer4 = meta.getPersistentDataContainer();
+        dataContainer4.set(key5, PersistentDataType.DOUBLE, 10.0);
+
         // Apply the ItemMeta to the ItemStack
         meta.setUnbreakable(true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -299,7 +310,10 @@ public class Weapons {
         meta.setDisplayName("§cMagma Leggings");
         // Set the color of the leather chestplate to orange
         meta.setColor(Color.ORANGE);
-
+        PersistentDataContainer dataContainer3 = meta.getPersistentDataContainer();
+        dataContainer3.set(key4, PersistentDataType.DOUBLE, 20.0);
+        PersistentDataContainer dataContainer4 = meta.getPersistentDataContainer();
+        dataContainer4.set(key5, PersistentDataType.DOUBLE, 10.0);
         // Apply the ItemMeta to the ItemStack
        
 
@@ -319,6 +333,11 @@ public class Weapons {
         meta.setDisplayName("§cMagma Boots");
         // Set the color of the leather chestplate to orange
         meta.setColor(Color.ORANGE);
+
+        PersistentDataContainer dataContainer3 = meta.getPersistentDataContainer();
+        dataContainer3.set(key4, PersistentDataType.DOUBLE, 20.0);
+        PersistentDataContainer dataContainer4 = meta.getPersistentDataContainer();
+        dataContainer4.set(key5, PersistentDataType.DOUBLE, 10.0);
 
         // Apply the ItemMeta to the ItemStack
        
@@ -385,6 +404,38 @@ public class Weapons {
 
         if (dataContainer.has(key2, PersistentDataType.INTEGER)) {
             return dataContainer.get(key2, PersistentDataType.INTEGER);
+        }
+
+        return 0; // or a default value
+    }
+
+    public static double getCustomMaxHealth(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) {
+            return 0; // or a default value
+        }
+
+        ItemMeta meta = item.getItemMeta();
+
+        PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
+
+        if (dataContainer.has(key4, PersistentDataType.DOUBLE)) {
+            return dataContainer.get(key4, PersistentDataType.DOUBLE);
+        }
+
+        return 0; // or a default value
+    }
+
+    public static double getCustomDamageResistance(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) {
+            return 0; // or a default value
+        }
+
+        ItemMeta meta = item.getItemMeta();
+
+        PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
+
+        if (dataContainer.has(key5, PersistentDataType.DOUBLE)) {
+            return dataContainer.get(key5, PersistentDataType.DOUBLE);
         }
 
         return 0; // or a default value

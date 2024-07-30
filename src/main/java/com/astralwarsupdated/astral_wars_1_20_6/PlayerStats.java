@@ -94,11 +94,20 @@ public class PlayerStats implements Listener {
         //weapon.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(30);
 
           ItemStack itemInHand = player.getInventory().getItemInMainHand();
+          ItemStack helmet = player.getInventory().getHelmet();
+          ItemStack chestplate = player.getInventory().getChestplate();
+          ItemStack leggings = player.getInventory().getLeggings();
+          ItemStack boots = player.getInventory().getBoots();
 
           playerStrength = (double) Weapons.getCustomStrength(itemInHand) + 10.0; //10 Base Strength
           playerCritChance = (double) Weapons.getCustomCritChance(itemInHand) + 10.0; //10% Base Crit Chance
           playerCritDamage = (double) Weapons.getCustomCritDamage(itemInHand) + 50.0; //50% Base Crit Damage
-          
+          //playerHealth = (double) Weapons.getCustomCritDamage(itemInHand) + 50.0; //50% Base Crit Damage
+          EntityHealth health = new EntityHealth();
+          playerMaxHealth = 100.0 + Weapons.getCustomMaxHealth(helmet) + Weapons.getCustomMaxHealth(chestplate) + Weapons.getCustomMaxHealth(leggings) + Weapons.getCustomMaxHealth(boots);
+          health.setMaxHealth(player, playerMaxHealth);
+          playerArmor = Weapons.getCustomDamageResistance(helmet) + Weapons.getCustomDamageResistance(chestplate) + Weapons.getCustomDamageResistance(leggings) + Weapons.getCustomDamageResistance(boots);
+          health.setDamageResistance(player, playerArmor);
           //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, 100));
           //player.setMetadata("GENERIC_ENTITY_MAX_HEALTH", new FixedMetadataValue(plugin, 100));
           //player.setMetadata("GENERIC_ENTITY_HEALTH_REGEN", new FixedMetadataValue(plugin, 2));
@@ -110,7 +119,7 @@ public class PlayerStats implements Listener {
           
           playerMaxAbsorption = player.getAttribute(Attribute.GENERIC_MAX_ABSORPTION).getValue();
           playerAttackDamage = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getValue();
-          playerArmor = player.getAttribute(Attribute.GENERIC_ARMOR).getValue();  //Unique the armor the player is using
+          //playerArmor = player.getAttribute(Attribute.GENERIC_ARMOR).getValue();  //Unique the armor the player is using
           playerSafeFallDistance = player.getAttribute(Attribute.GENERIC_SAFE_FALL_DISTANCE).getValue();
           playerAttackSpeed = player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).getValue(); //Unique to the weapon
           playerMovementSpeed = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue();
@@ -123,11 +132,14 @@ public class PlayerStats implements Listener {
      public void onPlayerJoin(PlayerJoinEvent event) {
          event.setJoinMessage("Coolio");
 
-         Player player = event.getPlayer();
+         final Player player = event.getPlayer();
          EntityHealth health = new EntityHealth();
          playerHealth = health.setHealth(player);
          playerMaxHealth = health.setMaxHealth(player, 100); //if player doesn't have Max Health or Regen val set it to these
          playerHealthRegen = health.setHealthRegen(player, 2);
+         playerArmor = health.setDamageResistance(player, 0);
+        //  player.getAttribute(Attribute.GENERIC_ARMOR).setBaseValue(0); //sets the armor of that given player
+        //  playerArmor = player.getAttribute(Attribute.GENERIC_ARMOR).getValue(); //Unique the armor the player is using
          
          player.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(0.02); //sets the gravity of that given player
          playerGravity = player.getAttribute(Attribute.GENERIC_GRAVITY).getValue();
@@ -145,8 +157,7 @@ public class PlayerStats implements Listener {
          playerAttackDamage = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getValue();
          //playerAttackDamage = 20.0;
          
-         player.getAttribute(Attribute.GENERIC_ARMOR).setBaseValue(0); //sets the armor of that given player
-         playerArmor = player.getAttribute(Attribute.GENERIC_ARMOR).getValue(); //Unique the armor the player is using
+
 
          player.getAttribute(Attribute.GENERIC_LUCK).setBaseValue(1); //sets the fist damage of that given player
          playerMagicFind = player.getAttribute(Attribute.GENERIC_LUCK).getValue();
@@ -174,6 +185,15 @@ public class PlayerStats implements Listener {
          //AttributeInstance attributeInstance2 = player.getAttribute(Attribute.GENERIC_GRAVITY); //standard damage
          //AttributeModifier modifier2 = new AttributeModifier(UUID.randomUUID(), "customPlayerGravityModifier", -.1, AttributeModifier.Operation.ADD_NUMBER);
          //attributeInstance2.addModifier(modifier2);
+         new BukkitRunnable() {
+            
+            //final Player players = player;
+            @Override
+            public void run() {
+                
+                updatePlayerStats(player);
+            }
+        }.runTaskLater(plugin, 5);
 
      }
 
@@ -328,24 +348,25 @@ public class PlayerStats implements Listener {
 
                 Random random = new Random();
                 if (random.nextDouble() * 100 <= playerCritChance) {
-
+                    Entity entity = event.getEntity();
                     // Apply critical damage
                     
                     double originalDamage = playerAttackDamage;
-                    double newDamage = originalDamage * ((1 + (playerCritDamage/100))) * Math.sqrt(player.getAttackCooldown()) * playerStrength; //ADD BASE STR HERE
-                    
+                    double totalDamage = (originalDamage * ((1 + (playerCritDamage/100))) * Math.sqrt(player.getAttackCooldown()) * playerStrength); //ADD BASE STR HERE
+                    double damageReducedAmount = totalDamage * (health.getDamageResistance(entity) / (health.getDamageResistance(entity) + 100));
+                    double actualDamage = totalDamage - damageReducedAmount;
                     //EntityHealth health = new EntityHealth();
                     event.setDamage(0);
-                    Entity entity = event.getEntity();
+                    
                         
-                    entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (health.getHealth(entity) - newDamage)));
+                    entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (health.getHealth(entity) - actualDamage)));
         
                     if (event.getEntity() instanceof LivingEntity) {    
                         health.entityHpRunnable((LivingEntity) entity);
                     }
                     //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(player) - newDamage)));
                     
-                    player.sendMessage("Critical Hit! Damage increased to " + newDamage);
+                    player.sendMessage("Critical Hit! Damage increased to " + actualDamage);
 
 
                     
@@ -354,21 +375,22 @@ public class PlayerStats implements Listener {
                 else {
 
                     // Do not apply critical damage
-                    
-                    double originalDamage = playerAttackDamage;
-                    double newDamage = originalDamage * Math.sqrt(player.getAttackCooldown()) * playerStrength; //ADD BASE STR HERE
-                    
-                    event.setDamage(0);
                     Entity entity = event.getEntity();
+                    double originalDamage = playerAttackDamage;
+                    double totalDamage = (originalDamage * Math.sqrt(player.getAttackCooldown()) * playerStrength); //ADD BASE STR HERE
+                    double damageReducedAmount = totalDamage * (health.getDamageResistance(entity) / (health.getDamageResistance(entity) + 100));
+                    double actualDamage = totalDamage - damageReducedAmount;
+                    event.setDamage(0);
+                    
                         
-                    entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (health.getHealth(entity) - newDamage)));
+                    entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (health.getHealth(entity) - actualDamage)));
         
                     if (event.getEntity() instanceof LivingEntity) {    
                         health.entityHpRunnable((LivingEntity) entity);
                     }
                     //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(player) - newDamage)));
                     
-                    player.sendMessage("Not Critical Hit! Damage increased to " + newDamage);
+                    player.sendMessage("Not Critical Hit! Damage increased to " + actualDamage);
                     //if (event.getEntity() instanceof Player) { //player defender
                     
 
@@ -393,17 +415,17 @@ public class PlayerStats implements Listener {
 
                     Random random = new Random();
                     if (random.nextDouble() * 100 <= playerCritChance) {
-
+                        Entity entity = event.getEntity();
                         // Apply critical damage
                         
                         double originalDamage = playerAttackDamage;
-                        double newDamage = originalDamage * ((1 + (playerCritDamage/100))) * playerStrength; //ADD BASE STR HERE
-                        //Math.sqrt(player.getArrowCooldown())
-                        //EntityHealth health = new EntityHealth();
+                        double totalDamage = (originalDamage * ((1 + (playerCritDamage/100))) * Math.sqrt(player.getAttackCooldown()) * playerStrength); //ADD BASE STR HERE
+                        double damageReducedAmount = totalDamage * (health.getDamageResistance(entity) / (health.getDamageResistance(entity) + 100));
+                        double actualDamage = totalDamage - damageReducedAmount;
                         event.setDamage(0);
-                        Entity entity = event.getEntity();
+                        
                             
-                        entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (health.getHealth(entity) - newDamage)));
+                        entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (health.getHealth(entity) - actualDamage)));
             
                         if (event.getEntity() instanceof LivingEntity) {    
                             health.entityHpRunnable((LivingEntity) entity);
@@ -411,7 +433,7 @@ public class PlayerStats implements Listener {
 
                         // if (projectile.getShooter() instanceof Player) {
                         Player messageReciever = (Player) projectile.getShooter();
-                        messageReciever.sendMessage("Critical Hit! Damage increased to " + newDamage);
+                        messageReciever.sendMessage("Critical Hit! Damage increased to " + actualDamage);
                         //}
                         //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(player) - newDamage)));
                         
@@ -432,15 +454,17 @@ public class PlayerStats implements Listener {
                     else {
 
                         // Do not apply critical damage
-                        
+                        Entity entity = event.getEntity();
                         double originalDamage = playerAttackDamage;
-                        double newDamage = originalDamage * playerStrength; //ADD BASE STR HERE
+                        double totalDamage = (originalDamage * Math.sqrt(player.getAttackCooldown()) * playerStrength); //ADD BASE STR HERE
+                        double damageReducedAmount = totalDamage * (health.getDamageResistance(entity) / (health.getDamageResistance(entity) + 100));
+                        double actualDamage = totalDamage - damageReducedAmount;
                         
                         //EntityHealth health = new EntityHealth();
                         event.setDamage(0);
-                        Entity entity = event.getEntity();
+                        
                             
-                        entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (health.getHealth(entity) - newDamage)));
+                        entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (health.getHealth(entity) - actualDamage)));
             
                         if (event.getEntity() instanceof LivingEntity) {    
                             health.entityHpRunnable((LivingEntity) entity);
@@ -448,7 +472,7 @@ public class PlayerStats implements Listener {
 
                         if (projectile.getShooter() instanceof Player) {
                             Player messageReciever2 = (Player) projectile.getShooter();
-                            messageReciever2.sendMessage("Not Critical Hit! Damage increased to " + newDamage);
+                            messageReciever2.sendMessage("Not Critical Hit! Damage increased to " + actualDamage);
                         }
                         //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (getHealth(player) - newDamage)));
                         
@@ -517,14 +541,16 @@ public class PlayerStats implements Listener {
         }
 
         else {//if (event.getDamager() instanceof LivingEntity && !(event.getDamager() instanceof Player)) { //Entity Attacker on player  SPECIFICALLY FOR MELEE ATKS 
-            double newDamage = event.getDamage();  //player defender or entity defender      
-                
+            Entity entity = event.getEntity();
+            double originalDamage = event.getDamage();
+            double damageReducedAmount = originalDamage * (health.getDamageResistance(entity) / (health.getDamageResistance(entity) + 100));
+            double actualDamage = originalDamage - damageReducedAmount;    
             
             //EntityHealth health = new EntityHealth();
             event.setDamage(0);
-            Entity entity = event.getEntity();
+            
                 
-            entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (health.getHealth(entity) - newDamage)));
+            entity.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, (health.getHealth(entity) - actualDamage)));
 
             
             if (event.getEntity() instanceof LivingEntity) {    
@@ -603,6 +629,10 @@ public class PlayerStats implements Listener {
        
 
     //add getter methods to grab stats in a different class
+    public double getHealth() {
+        return playerMaxHealth;
+    }
+
     public double getDefense() {
         return playerArmor;
     }

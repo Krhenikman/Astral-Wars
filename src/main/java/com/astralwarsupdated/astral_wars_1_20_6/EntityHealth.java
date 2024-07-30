@@ -2,6 +2,7 @@ package com.astralwarsupdated.astral_wars_1_20_6;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -39,15 +40,17 @@ public class EntityHealth {
     }
     public double setMaxHealth(Entity player, double maxHealth) {
         //if (entity != null) {
-            for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_MAX_HEALTH")) {
+            //for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_MAX_HEALTH")) {
 
                 //player.sendMessage(value.asString() + "");
-                return value.asDouble(); // or a default value
-
-            }
             player.setMetadata("GENERIC_ENTITY_MAX_HEALTH", new FixedMetadataValue(plugin, maxHealth)); //no value found means that this is the players first join 
-            
             return maxHealth;
+                //return value.asDouble(); // or a default value
+
+            //}
+            //player.setMetadata("GENERIC_ENTITY_MAX_HEALTH", new FixedMetadataValue(plugin, maxHealth)); //no value found means that this is the players first join 
+            
+            //return maxHealth;
 
     }
 
@@ -61,7 +64,12 @@ public class EntityHealth {
             }
             //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, 100)); //no value found means that this is the players first join 
             //player.sendMessage("null2");
+            if (player instanceof Player) {
+                player.sendMessage("Scenario problem");
+            }
             return 100.0;
+
+            
 
     }
 
@@ -82,6 +90,34 @@ public class EntityHealth {
     public double getHeathRegen(Entity player) {
         //if (entity != null) {
             for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_HEALTH_REGEN")) {
+
+                //player.sendMessage(value.asString() + "");
+                return value.asDouble(); // or a default value
+
+            }
+            //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, 100)); //no value found means that this is the players first join 
+            //player.sendMessage("null3");
+            return 0;
+
+    }
+
+    public double setDamageResistance(Entity player, double maxDamageResist) {
+        //if (entity != null) {
+            //for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_DAMAGE_RESISTANCE")) {
+        player.setMetadata("GENERIC_ENTITY_DAMAGE_RESISTANCE", new FixedMetadataValue(plugin, maxDamageResist));
+                //player.sendMessage(value.asString() + "");
+        return maxDamageResist; // or a default value
+
+            //}
+            //player.setMetadata("GENERIC_ENTITY_HEALTH", new FixedMetadataValue(plugin, 100)); //no value found means that this is the players first join 
+            //player.sendMessage("null3");
+            //return maxDamageResist;
+
+    }
+
+    public double getDamageResistance(Entity player) {
+        //if (entity != null) {
+            for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_DAMAGE_RESISTANCE")) {
 
                 //player.sendMessage(value.asString() + "");
                 return value.asDouble(); // or a default value

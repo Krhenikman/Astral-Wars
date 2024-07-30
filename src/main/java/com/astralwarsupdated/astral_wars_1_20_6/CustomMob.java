@@ -88,11 +88,13 @@ public class CustomMob implements Listener{
             
             healthval.setMaxHealth(customEntity, health);
             healthval.setHealth(customEntity);
+            healthval.setDamageResistance(customEntity, 3000);
             //healthval.setHealthRegen(customEntity, (health / 50.0));
             setAttribute(customEntity, Attribute.GENERIC_ATTACK_DAMAGE, attackDamage); //standard damage
             setAttribute(customEntity, Attribute.GENERIC_ATTACK_SPEED, attackSpeed); //standard damage
             setAttribute(customEntity, Attribute.GENERIC_SCALE, scale); //standard damage
             setAttribute(customEntity, Attribute.GENERIC_MOVEMENT_SPEED, movementSpeed); //standard damage
+            setAttribute(customEntity, Attribute.GENERIC_SAFE_FALL_DISTANCE, 1000);
             //setAttribute(customEntity, Attribute.GENERIC_ATTACK_DAMAGE, attackDamage); //standard damage
             //AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "customDamageModifier", 100, AttributeModifier.Operation.ADD_NUMBER);
             //attributeInstance.addModifier(modifier);
@@ -135,6 +137,17 @@ public class CustomMob implements Listener{
 
         // return ""; // or a default value
     }
+
+    public Location getLocation() {
+        return location;
+    }
+    // public boolean isEntityAlive(LivingEntity entity) {
+    //     for (Entity entity : world.getEntities()) {
+    //         if (entity.isDead() == true) {
+    //             return entity.isDead();
+    //         }
+    //     }
+    // }
 
 
     // @SuppressWarnings("deprecation")

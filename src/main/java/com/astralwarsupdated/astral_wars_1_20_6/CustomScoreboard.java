@@ -52,12 +52,16 @@ public class CustomScoreboard {
         //double maxHealth = player.getMaxHealth();
         EntityHealth healthSys = new EntityHealth();
         PlayerStats stats = new PlayerStats();
-        double health = healthSys.getHealth(player);
-        double maxHealth = healthSys.getMaxHealth(player);
         stats.updatePlayerStats(player);
+        double health = healthSys.getHealth(player);
+        //double maxHealth = healthSys.getMaxHealth(player);
+        double maxHealth = stats.getHealth();
+        double defense = healthSys.getDamageResistance(player);
+        double actualMax = healthSys.getMaxHealth(player); 
+        player.sendMessage(actualMax + "");
         //int defense = (int) stats.getDefense();
         //int damage = (int) stats.getDamage();
-        return ChatColor.RED + "❤ " + (int) health + "/" + (int) maxHealth + ChatColor.GREEN + "   ❈ " + stats.getDefense() + ChatColor.DARK_RED + "   ❁ " + stats.getStrength();
+        return ChatColor.RED + "❤ " + (int) health + "/" + (int) actualMax + ChatColor.GREEN + "   ❈ " + defense + ChatColor.DARK_RED + "   ❁ " + stats.getStrength();
     }
 
 
