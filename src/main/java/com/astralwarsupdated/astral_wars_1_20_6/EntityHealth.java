@@ -43,7 +43,8 @@ public class EntityHealth {
             //for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_MAX_HEALTH")) {
 
                 //player.sendMessage(value.asString() + "");
-            player.setMetadata("GENERIC_ENTITY_MAX_HEALTH", new FixedMetadataValue(plugin, maxHealth)); //no value found means that this is the players first join 
+            player.setMetadata("GENERIC_ENTITY_MAX_HEALTH", new FixedMetadataValue(plugin, maxHealth)); //no value found means that this is the players first join
+            setHealthRegen(player, (maxHealth/50)); 
             return maxHealth;
                 //return value.asDouble(); // or a default value
 
@@ -75,15 +76,15 @@ public class EntityHealth {
 
     public double setHealthRegen(Entity player, double maxRegen) {
         //if (entity != null) {
-            for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_HEALTH_REGEN")) {
+            // for (MetadataValue value : player.getMetadata("GENERIC_ENTITY_HEALTH_REGEN")) {
 
-                //player.sendMessage(value.asString() + "");
-                return value.asDouble(); // or a default value
+            //     //player.sendMessage(value.asString() + "");
+            //     return value.asDouble(); // or a default value
 
-            }
-            player.setMetadata("GENERIC_ENTITY_HEALTH_REGEN", new FixedMetadataValue(plugin, maxRegen)); //no value found means that this is the players first join 
+            // }
+        player.setMetadata("GENERIC_ENTITY_HEALTH_REGEN", new FixedMetadataValue(plugin, maxRegen)); //no value found means that this is the players first join 
             
-            return maxRegen;
+        return maxRegen;
 
     }
 

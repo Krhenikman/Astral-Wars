@@ -36,6 +36,7 @@ public class Weapons {
     public static ItemStack magmaleggings;
     public static ItemStack magmaboots;
     public static ItemStack statgui;
+    public static ItemStack StarboardGuitar;
 
     // Add custom metadata using the plugin instance
     public static Plugin plugin = Plugin.getInstance();
@@ -69,6 +70,7 @@ public class Weapons {
         custommagmaleg();
         custommagmaboot();
         customStatgui();
+        createstarboardguitar();
 
     }
 
@@ -141,6 +143,47 @@ public class Weapons {
 
         item.setItemMeta(meta);
         solarsystem = item;
+    }
+
+    private static void createstarboardguitar() {
+        ItemStack item = new ItemStack(Material.BRUSH,1);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName("§b♫ Starboard Guitar ♫");
+        List<String> lore = new ArrayList<>();
+        
+        lore.add("§7Damage: " + "§c+20");
+        lore.add("§7Strength: " + "§c+110");
+        lore.add("§7Crit Damage: " + "§c75%");
+        lore.add("§7Crit Chance: " + "§c25%");
+        lore.add("");
+        lore.add("§7Shoots spinning planets that orbit around the player!");
+        //lore.add("");
+        lore.add("");
+        lore.add("§8Cooldown: §a10s");
+        lore.add("§l§bCelestial Sword");
+        //lore.add("§fCool spinny planets!\n");
+        
+        meta.setLore(lore);
+        meta.addEnchant(Enchantment.INFINITY, 1, true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        meta.setUnbreakable(true);
+
+
+        AttributeModifier damageModifier = new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 20.0, AttributeModifier.Operation.ADD_NUMBER);
+        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, damageModifier);
+
+        PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
+        dataContainer.set(key, PersistentDataType.INTEGER, 110);
+
+        PersistentDataContainer dataContainer2 = meta.getPersistentDataContainer();
+        dataContainer2.set(key2, PersistentDataType.INTEGER, 75);
+
+        PersistentDataContainer dataContainer3 = meta.getPersistentDataContainer();
+        dataContainer3.set(key3, PersistentDataType.INTEGER, 25);
+
+        item.setItemMeta(meta);
+        StarboardGuitar = item;
     }
 
     public static void createblackholesword() {

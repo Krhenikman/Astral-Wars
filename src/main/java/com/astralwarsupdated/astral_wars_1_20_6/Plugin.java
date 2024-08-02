@@ -96,8 +96,8 @@ public class Plugin extends JavaPlugin
 
     getCommand("customMeteorHead").setExecutor(commandHandler);
 
-
     
+    getCommand("starboard").setExecutor(commandHandler);
     //player.getAttribute(Attribute.GENERIC_GRAVITY).setBaseValue(100.0);
     
     

@@ -55,7 +55,7 @@ public class CustomScoreboard {
         stats.updatePlayerStats(player);
         double health = healthSys.getHealth(player);
         //double maxHealth = healthSys.getMaxHealth(player);
-        double maxHealth = stats.getHealth();
+        //double maxHealth = stats.getHealth();
         double defense = healthSys.getDamageResistance(player);
         double actualMax = healthSys.getMaxHealth(player); 
         player.sendMessage(actualMax + "");

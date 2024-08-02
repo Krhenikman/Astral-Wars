@@ -182,6 +182,12 @@ public class CommandHandler implements CommandExecutor{
             
         }
 
+        if (command.getName().equalsIgnoreCase("starboard")) {
+            
+            player.getInventory().addItem(Weapons.StarboardGuitar);
+            
+        }
+
 
 
 

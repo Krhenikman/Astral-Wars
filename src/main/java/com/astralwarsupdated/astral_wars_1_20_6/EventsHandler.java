@@ -22,9 +22,13 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.text.html.parser.Entity;
 
 import org.bukkit.Bukkit;
+import org.bukkit.EntityEffect;
+import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Note;
 import org.bukkit.Particle;
+import org.bukkit.Note.Tone;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -34,6 +38,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.util.Vector;
 
@@ -50,6 +55,10 @@ public class EventsHandler implements Listener {
     private final Map<UUID, Long> holdTasks = new HashMap<>();
     private final JavaPlugin plugin;
     
+
+
+    private StarboardGuitar starboardGuitar; //starts at string 0 ;
+    private int starCount = 0;
     //double angle = 0;
     
     //public static JavaPlugin plugin = new 
@@ -140,10 +149,34 @@ public class EventsHandler implements Listener {
     //  }
 
     @EventHandler
+    public void onPlayerItemHeld(PlayerItemHeldEvent event) {
+        // Get the player and the new item in their hand
+        ItemStack itemInHand = event.getPlayer().getInventory().getItem(event.getNewSlot());
+        //ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
+        Player player = event.getPlayer();
+        // Check if the item is not null and is a diamond sword
+        if (itemInHand != null && itemInHand.hasItemMeta()) {
+            ItemMeta meta = itemInHand.getItemMeta();
+            if (meta.hasDisplayName() && "§b♫ Starboard Guitar ♫".equals(meta.getDisplayName())) {
+                player.sendMessage("starboard");
+                //if (starboardGuitar == null) {
+                    starCount = 0;
+                    starboardGuitar = new StarboardGuitar(plugin, 0); //starts at string 0 
+                    
+                //}
+                starboardGuitar.musicalDamage(player, event);
+            }
+        }
+    }
+
+
+    @SuppressWarnings("deprecation")
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         // Check if the player right-clicked
         
         Player player = event.getPlayer();
+        Location c1 = player.getLocation();
         
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         ItemMeta meta = itemInHand.getItemMeta();
@@ -153,7 +186,57 @@ public class EventsHandler implements Listener {
 
         if ((itemInHand != null) && (itemInHand.hasItemMeta())) {
            
+            if ((event.getAction().toString().contains("RIGHT_CLICK")) && (meta.getDisplayName().equals("§b♫ Starboard Guitar ♫"))) { 
+                if (starboardGuitar.getstrandNumb() == 6 || starboardGuitar.getstrandNumb() == 7) {
+                    if (starCount == 0) {
+                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.G));
+                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.G));
+                        starCount++;
+                    }
+                    if (starCount == 1) {
+                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.A));
+                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.A));
+                        starCount++;
+                    }
+                    else if (starCount == 2) {
+                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.B));
+                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.B));
+                        starCount++;
+                    }
+                    else if (starCount == 3) {
+                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.C));
+                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.C));
+                        starCount++;
+                    }
+                    else if (starCount == 4) {
+                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.D));
+                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.D));
+                        starCount++;
+                    }
+                    else if (starCount == 5) {
+                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.E));
+                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.E));
+                        starCount++;
+                    }
+                    else if (starCount == 6) {
+                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.F));
+                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.F));
+                        //starCount++;
+                    }
 
+                    for (org.bukkit.entity.Entity entity : c1.getWorld().getNearbyEntities(c1, 6, 6, 6)) {
+                        if ((player != entity) && (!entity.isDead()) && (entity instanceof LivingEntity)) { // Don't TP to self && Don't TP to unalive entities
+                            ((Damageable) entity).damage(starCount*10, player);
+                            
+                        }
+                    }
+                }
+                else {
+                    //player.p
+                    player.playEffect(EntityEffect.BREAK_EQUIPMENT_OFF_HAND);
+                    starCount = 0;
+                }
+            }
 
             if ((event.getAction().toString().contains("RIGHT_CLICK")) && (meta.getDisplayName().equals("Rocket Thruster"))) { 
                 //key = uuid of the player
@@ -222,7 +305,7 @@ public class EventsHandler implements Listener {
                     for (org.bukkit.entity.Entity entity : currentLocation.getWorld().getNearbyEntities(currentLocation, damageRadius, damageRadius, damageRadius)) {
                         if (player != entity) { // Don't hurt the user of the weapon
                             //entity.setLastDamageCause(null); // Reset any other damage causes
-                            ((Damageable) entity).damage(damageAmount, entity); // Apply damage
+                            ((Damageable) entity).damage(damageAmount, player); // Apply damage
                        
                    
 
@@ -262,6 +345,8 @@ public class EventsHandler implements Listener {
                     }
                 }
             }
+
+
 
             
                 

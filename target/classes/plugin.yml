@@ -79,3 +79,7 @@ commands:
     description: Gives Gui Item
     usage: /<command>
 
+  starboard:
+    Description: Cool Guitar that does lots of dmg if you play it right
+    usage: /<command>
+    aliases: [sb]
