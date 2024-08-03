@@ -224,12 +224,48 @@ public class EventsHandler implements Listener {
                         //starCount++;
                     }
 
-                    for (org.bukkit.entity.Entity entity : c1.getWorld().getNearbyEntities(c1, 6, 6, 6)) {
-                        if ((player != entity) && (!entity.isDead()) && (entity instanceof LivingEntity)) { // Don't TP to self && Don't TP to unalive entities
-                            ((Damageable) entity).damage(starCount*10, player);
+                    // for (org.bukkit.entity.Entity entity : c1.getWorld().getNearbyEntities(c1, 6, 6, 6)) {
+                    //     if ((player != entity) && (!entity.isDead()) && (entity instanceof LivingEntity)) { // Don't TP to self && Don't TP to unalive entities
+                    //         ((Damageable) entity).damage(starCount*10, player);
                             
+                    //     }
+                    // }
+                    Location origin = player.getEyeLocation();
+                    Location currentLocation = origin.clone();
+    
+    
+    
+    
+                    for (int travelDistance = 1; travelDistance < 10; travelDistance++) {    //roughly 13 blocks
+    
+    
+    
+    
+                        double damageRadius = 2.0;
+                        double damageAmount = 5.0; // Amount of damage to apply
+                        //Vector direction;
+    
+    
+                        currentLocation.add(currentLocation.getDirection().multiply(1));
+    
+    
+                        currentLocation.getWorld().spawnParticle(Particle.NOTE, currentLocation, 5); // 10 flame particles
+                       
+                       
+    
+    
+    
+    
+                        for (org.bukkit.entity.Entity entity : currentLocation.getWorld().getNearbyEntities(currentLocation, damageRadius, damageRadius, damageRadius)) {
+                            if (player != entity) { // Don't hurt the user of the weapon
+                                //entity.setLastDamageCause(null); // Reset any other damage causes
+                                ((Damageable) entity).damage(damageAmount, player); // Apply damage
+                            }
                         }
                     }
+
+
+                    starboardGuitar.setstrandNumb(0); //starts at string 0 
                 }
                 else {
                     //player.p
@@ -306,13 +342,15 @@ public class EventsHandler implements Listener {
                         if (player != entity) { // Don't hurt the user of the weapon
                             //entity.setLastDamageCause(null); // Reset any other damage causes
                             ((Damageable) entity).damage(damageAmount, player); // Apply damage
-                       
+                    
+                        }
+                    }
                    
 
 
                            
-                        }
-                    }    //runTaskTimer(this, 0L, 1L); // 1-tick interval for smooth particle effect
+                        
+                        //runTaskTimer(this, 0L, 1L); // 1-tick interval for smooth particle effect
                 }
             }
 

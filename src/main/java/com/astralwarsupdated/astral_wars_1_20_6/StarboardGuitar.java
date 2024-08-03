@@ -169,6 +169,8 @@ public class StarboardGuitar {
     public int getstrandNumb() {
         return strandNum;
     }
-
+    public void setstrandNumb(int string) {
+        strandNum = string;
+    }
 
 }

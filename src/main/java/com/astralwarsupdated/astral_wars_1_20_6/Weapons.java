@@ -156,7 +156,7 @@ public class Weapons {
         lore.add("§7Crit Damage: " + "§c75%");
         lore.add("§7Crit Chance: " + "§c25%");
         lore.add("");
-        lore.add("§7Shoots spinning planets that orbit around the player!");
+        lore.add("§7Send powerful soundwaves of music through your enemies!");
         //lore.add("");
         lore.add("");
         lore.add("§8Cooldown: §a10s");
