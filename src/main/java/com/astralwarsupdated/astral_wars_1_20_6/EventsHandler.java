@@ -1,48 +1,33 @@
 package com.astralwarsupdated.astral_wars_1_20_6;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
-import org.bukkit.event.player.PlayerBedLeaveEvent;
-import org.bukkit.event.player.PlayerEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.text.html.parser.Entity;
-
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Note;
-import org.bukkit.Particle;
 import org.bukkit.Note.Tone;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.entity.ArmorStand;
+import org.bukkit.Particle;
 import org.bukkit.entity.Damageable;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
+import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
-
-import java.util.logging.Logger;
 
 
 
@@ -147,6 +132,18 @@ public class EventsHandler implements Listener {
     //     }
 
     //  }
+    // @EventHandler
+    // public void onDatabaseLoad(DatabaseLoadEvent e) {
+    //     HeadDatabaseAPI api = new HeadDatabaseAPI();
+    //     try {
+    //         ItemStack item = api.getItemHead("7129");
+    //         //getLogger().info(api.getItemID(item));
+    //     } catch (NullPointerException nullPointerException) {
+    //         //getLogger().info("Could not find the head you were looking for");
+    //     }
+    // }
+
+
 
     @EventHandler
     public void onPlayerItemHeld(PlayerItemHeldEvent event) {

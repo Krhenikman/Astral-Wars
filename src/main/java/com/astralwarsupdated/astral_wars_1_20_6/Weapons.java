@@ -1,5 +1,6 @@
 package com.astralwarsupdated.astral_wars_1_20_6;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,10 +14,9 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public class Weapons {
 
@@ -73,6 +73,8 @@ public class Weapons {
         createstarboardguitar();
 
     }
+
+    
 
     private static void createWand() {
         ItemStack item = new ItemStack(Material.FEATHER,1);
@@ -315,7 +317,27 @@ public class Weapons {
     }
 
     private static void custommagmahelm() {
-        ItemStack item = new ItemStack(Material.MAGMA_BLOCK,1);
+        //ItemStack item = new ItemStack(Material.MAGMA_BLOCK,1);
+
+        CustomHead head = new CustomHead();
+        ItemStack item = head.getCustomTextureSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzExNDdkODlkMjQ5OGY5ZTIxZjM2YWQzZTUzNTZiMjMyN2M4Zjg1NTE4M2QzZTY5ZjRkNjYwZTViYzIxMGFiYiJ9fX0=");
+        
+
+        //SkullMeta
+        //HeadDatabaseAPI api = new HeadDatabaseAPI();
+        // HeadDatabaseAPI api = new HeadDatabaseAPI();
+        //ItemStack item = api.getItemHead("92035");
+        // HeadConverter
+
+        //try {
+            //ItemStack item = api.getItemHead("7129");
+            //getLogger().info(api.getItemID(item));
+        //} catch (NullPointerException nullPointerException) {
+            //getLogger().info("Could not find the head you were looking for");
+        //}
+
+
+        
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("§cMagma Helmet");
         meta.setUnbreakable(true);

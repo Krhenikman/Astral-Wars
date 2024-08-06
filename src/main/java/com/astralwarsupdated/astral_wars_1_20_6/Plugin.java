@@ -1,14 +1,9 @@
 package com.astralwarsupdated.astral_wars_1_20_6;
 
-import java.util.logging.Logger;
-import org.bukkit.plugin.java.JavaPlugin;
+//import java.net.http.WebSocket.Listener;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 
 /*
@@ -42,13 +37,29 @@ public class Plugin extends JavaPlugin
 
 
 
+
     //Events
+    //getServer().getPluginManager().registerEvents(new HeadDatabaseAPIPlugin(instance), this);
+    //getServer().getPluginManager().registerEvents(this, this);
     getServer().getPluginManager().registerEvents(new EventsHandler(instance), this);
     getServer().getPluginManager().registerEvents(new OrbitalPlanetStrike(instance), this);
     getServer().getPluginManager().registerEvents(new OreMining(instance), this);
     getServer().getPluginManager().registerEvents(new PlayerStats(), this);
     getServer().getPluginManager().registerEvents(new CustomMob(), this);
     //getServer().getPluginManager().registerEvents(new CustomScoreboard(), this);
+
+
+    // @EventHandler
+    // public void onDatabaseLoad(DatabaseLoadEvent e) {
+    //     HeadDatabaseAPI api = new HeadDatabaseAPI();
+    //     try {
+    //         ItemStack item = api.getItemHead("7129");
+    //         getLogger().info(api.getItemID(item));
+    //     } catch (NullPointerException nullPointerException) {
+    //         getLogger().info("Could not find the head you were looking for");
+    //     }
+    // }
+
 
     //Commands
     
