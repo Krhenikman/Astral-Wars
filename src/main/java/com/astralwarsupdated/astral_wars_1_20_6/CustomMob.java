@@ -1,5 +1,7 @@
 package com.astralwarsupdated.astral_wars_1_20_6;
 
+import java.util.Random;
+
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -7,7 +9,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -76,7 +80,7 @@ public class CustomMob implements Listener{
             
             healthval.setMaxHealth(customEntity, health);
             healthval.setHealth(customEntity);
-            healthval.setDamageResistance(customEntity, 300);
+            healthval.setDamageResistance(customEntity, 100);
             //healthval.setHealthRegen(customEntity, (health / 50.0));
             setAttribute(customEntity, Attribute.GENERIC_ATTACK_DAMAGE, attackDamage); //standard damage
             setAttribute(customEntity, Attribute.GENERIC_ATTACK_SPEED, attackSpeed); //standard damage
@@ -89,6 +93,7 @@ public class CustomMob implements Listener{
             customEntity.setCustomName("§3" + name + " §c❤ " + String.format("%.2f", healthval.getHealth(customEntity)) + " / " + String.format("%.2f",  healthval.getMaxHealth(customEntity)));
             customEntity.setCustomNameVisible(true);
             //zombie.setLootTable
+
             // Set the armor
             customEntity.getEquipment().setHelmet(helmet);
             customEntity.getEquipment().setChestplate(chestplate);
@@ -124,6 +129,23 @@ public class CustomMob implements Listener{
         // }
 
         // return ""; // or a default value
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+        if (getName(event.getEntity()).equals("Molten Fiend")) { // Specify the entity type
+            Random random = new Random();
+
+            // Clear the default drops
+            event.getDrops().clear();
+
+            // Add custom loot
+            if (random.nextDouble() <= 0.5) { // 50% chance to drop an Molten Core
+                event.getDrops().add(ItemMaterials.moltencore);
+            }
+
+            // Add more items with different probabilities as needed
+        }
     }
 
     public Location getLocation() {

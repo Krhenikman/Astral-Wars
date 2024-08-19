@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -99,7 +98,10 @@ public class GravityField implements Listener{
         armorStand.setGravity(false);
         //armorStand.setItemInHand(new ItemStack(Material.OCHRE_FROGLIGHT));
         //armorStand.setHeadPose((new EulerAngle(90, 90, 90)));
-        armorStand.setHelmet(new ItemStack(Material.AMETHYST_BLOCK));
+        CustomHead head = new CustomHead();
+        ItemStack item = head.getCustomTextureSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzNhOGU0MDJkYWQxYjdkYWQ5YWFlNmY0MDE1OTMyMTgzNDI5Y2U4N2JiYmVjZWQzMTE5MDI2ZjgyOTYzMzZjMiJ9fX0=");
+
+        armorStand.setHelmet(item);
 
         return armorStand;
     }

@@ -1,17 +1,12 @@
 package com.astralwarsupdated.astral_wars_1_20_6;
 
-import javax.swing.text.html.parser.Entity;
-
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -66,7 +61,7 @@ public class OrbitalPlanetStrike implements Listener {
     }
 
     @SuppressWarnings("deprecation")
-    private ArmorStand armorStandHandler(Player player) {
+    private ArmorStand armorStandHandler(Player player, ItemStack item) {
         //double circleRadius = 5.0;
         Location c1 = player.getLocation();
 
@@ -93,7 +88,7 @@ public class OrbitalPlanetStrike implements Listener {
         armorStand.setArms(true);
         //armorStand.setItemInHand(new ItemStack(Material.OCHRE_FROGLIGHT));
         armorStand.setHeadPose((new EulerAngle(90, 90, 90)));
-        armorStand.setHelmet(new ItemStack(Material.OCHRE_FROGLIGHT));
+        armorStand.setHelmet(item);
 
         return armorStand;
     }
@@ -194,9 +189,14 @@ public class OrbitalPlanetStrike implements Listener {
         // final ArmorStand armorStand1 = armorStandHandler(players); //private
         // final ArmorStand armorStand2 = armorStandHandler(players); //private
         // final ArmorStand armorStand3 = armorStandHandler(players); //private
-        armorStand1 = armorStandHandler(players);
-        armorStand2 = armorStandHandler(players);
-        armorStand3 = armorStandHandler(players);
+        CustomHead head = new CustomHead();
+        ItemStack item1 = head.getCustomTextureSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmE0YzRhZGZmYWJiNjM4ZTNlNDFhOTM5YjRkZjE1ZWYzODA4MGMxNmMzNzkwODExOTExZGFkZjYyNjEzZDYifX19"); //planet
+        ItemStack item2 = head.getCustomTextureSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ4NTlmN2IzY2RmZGFkNDcxODI4ODRlMTI3ZjQ2MWZlOGY5ZmM1MmY3ZDE1MDQyN2MxMTcwNzliMDkyNGUzIn19fQ=="); //fire planet
+        ItemStack item3 = head.getCustomTextureSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDNlMWM1ZTY1ZTEzNTU5YmY2MGUxNTRmMTdmNmFmM2E4ZTU2MDhhNDk4N2VjZDFlMGZhZTc1MWM2ZjgyNzI2In19fQ=="); //ice planet
+
+        armorStand1 = armorStandHandler(players, item1);
+        armorStand2 = armorStandHandler(players, item2);
+        armorStand3 = armorStandHandler(players, item3);
         // this.armorStand1 = armorStand1;
         // this.armorStand2 = armorStand2;
         // this.armorStand3 = armorStand3;

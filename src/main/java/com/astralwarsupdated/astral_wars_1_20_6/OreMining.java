@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -16,17 +17,13 @@ import org.bukkit.entity.ShulkerBullet;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.world.WorldEvent;
-import org.bukkit.World;
 
 public class OreMining implements Listener{
     
@@ -57,7 +54,9 @@ public class OreMining implements Listener{
                 mob.createCustomMob();
             }
             if (random.nextDouble() * 100 <= 20) {
-                CustomMob mob = new CustomMob(player, new Location(block.getWorld(), 12,-20,252), EntityType.ZOMBIE, "Molten Fiend", Weapons.magmahelmet, Weapons.magmachestplate,Weapons.magmaleggings, Weapons.magmaboots, 40000.0, 30.0, 2, 0.5, 10.0);
+                CustomHead head = new CustomHead();
+                ItemStack meteorBossHead = head.getCustomTextureSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNlNTkyNTBjOTY4ZTUwODUzOWJmMmU4NDkyZjU2YTJmNjY0ZWZiMzA5ZjQ5NWEwN2RjM2E1NGM4YjZhMjQ5ZSJ9fX0=");
+                CustomMob mob = new CustomMob(player, new Location(block.getWorld(), 12,-20,252), EntityType.ZOMBIE, "Molten Fiend", meteorBossHead, Weapons.magmachestplate,Weapons.magmaleggings, Weapons.magmaboots, 40000.0, 30.0, 2, 0.5, 10.0);
                 //meteorShot = true;
                 mob.createCustomMob();
                 moltenFiendAtk(player.getWorld(), mob);
