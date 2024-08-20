@@ -100,7 +100,7 @@ public class CommandHandler implements CommandExecutor{
             
 
 
-            CustomMob mob = new CustomMob(player, player.getLocation(), EntityType.ZOMBIE, "Kevin", Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots, 1000.0, 25.0, 2, 0.2, 2.0);
+            CustomMob mob = new CustomMob(player, player.getLocation(), EntityType.ZOMBIE, "Kevin", Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots, 1000.0, 25.0, 2, 0.2, 2.0, 0);
 
             mob.createCustomMob();
 
@@ -122,7 +122,7 @@ public class CommandHandler implements CommandExecutor{
             
 
 
-            CustomMob mob = new CustomMob(player, player.getLocation(), EntityType.SKELETON, "Kyle", Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots, 1000.0, 15.0, 2, 0.3, 10.0);
+            CustomMob mob = new CustomMob(player, player.getLocation(), EntityType.SKELETON, "Kyle", Weapons.zomhelmet, Weapons.zomchestplate, Weapons.zomleggings, Weapons.zomboots, 1000.0, 15.0, 2, 0.3, 10.0, 0);
 
             mob.createCustomMob();
 
@@ -144,7 +144,7 @@ public class CommandHandler implements CommandExecutor{
             
 
 
-            CustomMob mob = new CustomMob(player, player.getLocation(), EntityType.ZOMBIE, "Meteor Head", Weapons.magmahelmet, Weapons.magmachestplate,Weapons.magmaleggings, Weapons.magmaboots, 1000.0, 15.0, 1.5, 0.5, 10.0);
+            CustomMob mob = new CustomMob(player, player.getLocation(), EntityType.ZOMBIE, "Meteor Head", Weapons.magmahelmet, Weapons.magmachestplate,Weapons.magmaleggings, Weapons.magmaboots, 1000.0, 15.0, 1.5, 0.5, 10.0, 0);
 
             mob.createCustomMob();
 

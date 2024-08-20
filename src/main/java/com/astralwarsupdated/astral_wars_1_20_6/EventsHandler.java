@@ -6,7 +6,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
-import org.bukkit.EntityEffect;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Note;
@@ -35,7 +34,7 @@ public class EventsHandler implements Listener {
     
     
     private static final long COOLDOWN_TIME2 = 1; // 1 seconds
-    private static final long COOLDOWN_TIME = 10; // 10 seconds
+    private static final long COOLDOWN_TIME = 5; // 5 seconds
     private final Map<UUID, Long> lastUseTimes = new HashMap<>();
     private final Map<UUID, Long> holdTasks = new HashMap<>();
     private final JavaPlugin plugin;
@@ -43,7 +42,7 @@ public class EventsHandler implements Listener {
 
 
     private StarboardGuitar starboardGuitar; //starts at string 0 ;
-    private int starCount = 0;
+    
     //double angle = 0;
     
     //public static JavaPlugin plugin = new 
@@ -56,6 +55,7 @@ public class EventsHandler implements Listener {
 
     public EventsHandler(JavaPlugin plugin) {
         this.plugin = plugin;
+
     }
 
    
@@ -157,8 +157,8 @@ public class EventsHandler implements Listener {
             if (meta.hasDisplayName() && "§b♫ Starboard Guitar ♫".equals(meta.getDisplayName())) {
                 player.sendMessage("starboard");
                 //if (starboardGuitar == null) {
-                    starCount = 0;
-                    starboardGuitar = new StarboardGuitar(plugin, 0); //starts at string 0 
+                    
+                    starboardGuitar = new StarboardGuitar(plugin, 0, 0); //starts at string 0 
                     
                 //}
                 starboardGuitar.musicalDamage(player, event);
@@ -185,48 +185,26 @@ public class EventsHandler implements Listener {
            
             if ((event.getAction().toString().contains("RIGHT_CLICK")) && (meta.getDisplayName().equals("§b♫ Starboard Guitar ♫"))) { 
                 if (starboardGuitar.getstrandNumb() == 6 || starboardGuitar.getstrandNumb() == 7) {
-                    if (starCount == 0) {
+                    if (starboardGuitar.starCount() == 0) {
                         player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.G));
                         player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.G));
-                        starCount++;
+                        starboardGuitar.setStarCount(starboardGuitar.starCount() + 1);
                     }
-                    if (starCount == 1) {
+                    if (starboardGuitar.starCount() == 1) {
                         player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.A));
                         player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.A));
-                        starCount++;
+                        starboardGuitar.setStarCount(starboardGuitar.starCount() + 1);
                     }
-                    else if (starCount == 2) {
+                    else if (starboardGuitar.starCount() == 2) {
                         player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.B));
                         player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.B));
-                        starCount++;
+                        starboardGuitar.setStarCount(starboardGuitar.starCount() + 1);
                     }
-                    else if (starCount == 3) {
+                    else if (starboardGuitar.starCount() == 3) {
                         player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.C));
                         player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.C));
-                        starCount++;
+                        starboardGuitar.setStarCount(starboardGuitar.starCount() + 1);
                     }
-                    else if (starCount == 4) {
-                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.D));
-                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.D));
-                        starCount++;
-                    }
-                    else if (starCount == 5) {
-                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.E));
-                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.E));
-                        starCount++;
-                    }
-                    else if (starCount == 6) {
-                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.F));
-                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.F));
-                        //starCount++;
-                    }
-
-                    // for (org.bukkit.entity.Entity entity : c1.getWorld().getNearbyEntities(c1, 6, 6, 6)) {
-                    //     if ((player != entity) && (!entity.isDead()) && (entity instanceof LivingEntity)) { // Don't TP to self && Don't TP to unalive entities
-                    //         ((Damageable) entity).damage(starCount*10, player);
-                            
-                    //     }
-                    // }
                     Location origin = player.getEyeLocation();
                     Location currentLocation = origin.clone();
     
@@ -264,10 +242,72 @@ public class EventsHandler implements Listener {
 
                     starboardGuitar.setstrandNumb(0); //starts at string 0 
                 }
+                else if (starboardGuitar.getstrandNumb() == 5 || starboardGuitar.getstrandNumb() == 6) {
+                    if (starboardGuitar.starCount() == 4) {
+                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.D));
+                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.D));
+                        starboardGuitar.setStarCount(starboardGuitar.starCount() + 1);
+                    }
+                    else if (starboardGuitar.starCount() == 5) {
+                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.E));
+                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.E));
+                        starboardGuitar.setStarCount(starboardGuitar.starCount() + 1);
+                    }
+                    else if (starboardGuitar.starCount() == 6) {
+                        player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(1,Tone.F));
+                        player.playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1,Tone.F));
+                            //starCount++;
+                    }
+                    Location origin = player.getEyeLocation();
+                    Location currentLocation = origin.clone();
+    
+    
+    
+    
+                    for (int travelDistance = 1; travelDistance < 10; travelDistance++) {    //roughly 13 blocks
+    
+    
+    
+    
+                        double damageRadius = 2.0;
+                        double damageAmount = 5.0; // Amount of damage to apply
+                        //Vector direction;
+    
+    
+                        currentLocation.add(currentLocation.getDirection().multiply(1));
+    
+    
+                        currentLocation.getWorld().spawnParticle(Particle.NOTE, currentLocation, 5); // 10 flame particles
+                       
+                       
+    
+    
+    
+    
+                        for (org.bukkit.entity.Entity entity : currentLocation.getWorld().getNearbyEntities(currentLocation, damageRadius, damageRadius, damageRadius)) {
+                            if (player != entity) { // Don't hurt the user of the weapon
+                                //entity.setLastDamageCause(null); // Reset any other damage causes
+                                ((Damageable) entity).damage(damageAmount, player); // Apply damage
+                            }
+                        }
+                    }
+
+
+                    starboardGuitar.setstrandNumb(0); //starts at string 0 
+                }
+
+                    // for (org.bukkit.entity.Entity entity : c1.getWorld().getNearbyEntities(c1, 6, 6, 6)) {
+                    //     if ((player != entity) && (!entity.isDead()) && (entity instanceof LivingEntity)) { // Don't TP to self && Don't TP to unalive entities
+                    //         ((Damageable) entity).damage(starCount*10, player);
+                            
+                    //     }
+                    // }
+
+                
                 else {
                     //player.p
-                    player.playEffect(EntityEffect.BREAK_EQUIPMENT_OFF_HAND);
-                    starCount = 0;
+                    player.playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.natural(0,Tone.F));
+                    starboardGuitar.setStarCount(0);
                 }
             }
 

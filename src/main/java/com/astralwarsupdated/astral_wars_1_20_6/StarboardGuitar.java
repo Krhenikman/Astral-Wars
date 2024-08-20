@@ -32,18 +32,30 @@ public class StarboardGuitar {
     private String strand9 = ChatColor.RED + "----" + ChatColor.GREEN + "--" + ChatColor.RED + "--X-";
     private String strand10 = ChatColor.RED + "----" + ChatColor.GREEN + "--" + ChatColor.RED + "---X";
 
+    private String originalComboStrand = ChatColor.RED + "---" + ChatColor.GREEN + "--" + ChatColor.RED + "---";
+    private String strandCombo1 = ChatColor.RED + "X--" + ChatColor.GREEN + "--" + ChatColor.RED + "---";
+    private String strandCombo2 = ChatColor.RED + "-X-" + ChatColor.GREEN + "--" + ChatColor.RED + "---";
+    private String strandCombo3 = ChatColor.RED + "--X" + ChatColor.GREEN + "--" + ChatColor.RED + "---";
+    private String strandCombo4 = ChatColor.RED + "---" + ChatColor.GREEN + "X-" + ChatColor.RED + "---";
+    private String strandCombo5 = ChatColor.RED + "---" + ChatColor.GREEN + "-X" + ChatColor.RED + "---";
+    private String strandCombo6 = ChatColor.RED + "---" + ChatColor.GREEN + "--" + ChatColor.RED + "X--";
+    private String strandCombo7 = ChatColor.RED + "---" + ChatColor.GREEN + "--" + ChatColor.RED + "-X-";
+    private String strandCombo8 = ChatColor.RED + "---" + ChatColor.GREEN + "--" + ChatColor.RED + "--X";
+
 
 
 
 
     private int strandNum;
+    private int starCount;
 
     //private int taskId = -1;
     private final Map<UUID, Integer> playerTasks = new HashMap<>();
 
-    public StarboardGuitar(JavaPlugin plugin, int stringNumber) {
+    public StarboardGuitar(JavaPlugin plugin, int stringNumber, int starNum) {
         this.plugin = plugin;
         strandNum = stringNumber;
+        starCount = starNum;
         
     }
 
@@ -53,52 +65,93 @@ public class StarboardGuitar {
     }
 
     private String getGuitarStrand(Player player) {
-
-        if (strandNum == 0) {
-            strandNum++;
-            return originalStrand;
-        }
-        if (strandNum == 1) {
-            strandNum++;
-            return strand1;
-        }
-        if (strandNum == 2) {
-            strandNum++;
-            return strand2;
-        }
-        if (strandNum == 3) {
-            strandNum++;
-            return strand3;
-        }
-        if (strandNum == 4) {
-            strandNum++;
-            return strand4;
-        }
-        if (strandNum == 5) {
-            strandNum++;
-            return strand5;
-        }
-        if (strandNum == 6) {
-            strandNum++;
-            return strand6;
-        }
-        if (strandNum == 7) {
-            strandNum++;
-            return strand7;
-        }
-        if (strandNum == 8) {
-            strandNum++;
-            return strand8;
-        }
-        if (strandNum == 9) {
-            strandNum++;
-            return strand9;
+        //EventsHandler starCount = new EventsHandler(plugin);
+        player.sendMessage(starCount + "");
+        if (starCount <= 3) {
+            if (strandNum == 0) {
+                strandNum++;
+                return originalStrand;
+            }
+            if (strandNum == 1) {
+                strandNum++;
+                return strand1;
+            }
+            if (strandNum == 2) {
+                strandNum++;
+                return strand2;
+            }
+            if (strandNum == 3) {
+                strandNum++;
+                return strand3;
+            }
+            if (strandNum == 4) {
+                strandNum++;
+                return strand4;
+            }
+            if (strandNum == 5) {
+                strandNum++;
+                return strand5;
+            }
+            if (strandNum == 6) {
+                strandNum++;
+                return strand6;
+            }
+            if (strandNum == 7) {
+                strandNum++;
+                return strand7;
+            }
+            if (strandNum == 8) {
+                strandNum++;
+                return strand8;
+            }
+            if (strandNum == 9) {
+                strandNum++;
+                return strand9;
+            }
+            else {
+                strandNum = 0;
+                return strand10;
+            }
         }
         else {
-            strandNum = 0;
-            return strand10;
-        }
+            if (strandNum == 0) {
+                strandNum++;
+                return originalComboStrand;
+            }
+            if (strandNum == 1) {
+                strandNum++;
+                return strandCombo1;
+            }
+            if (strandNum == 2) {
+                strandNum++;
+                return strandCombo2;
+            }
+            if (strandNum == 3) {
+                strandNum++;
+                return strandCombo3;
+            }
+            if (strandNum == 4) {
+                strandNum++;
+                return strandCombo4;
+            }
+            if (strandNum == 5) {
+                strandNum++;
+                return strandCombo5;
+            }
+            if (strandNum == 6) {
+                strandNum++;
+                return strandCombo6;
+            }
+            if (strandNum == 7) {
+                strandNum++;
+                return strandCombo7;
+            }
 
+            else {
+                strandNum = 0;
+                return strandCombo8;
+            }
+        }
 
     }
     private void stopRepeatingTask(UUID playerId) {
@@ -126,6 +179,7 @@ public class StarboardGuitar {
                 //ItemStack itemInHand = event.getPlayer().getInventory().getItem(event.getNewSlot());
                 
                 final Player player = players;
+                final EventsHandler starCount = new EventsHandler(plugin);
                 int taskId = new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -156,6 +210,7 @@ public class StarboardGuitar {
                         }
 
                     }
+                    
                 }.runTaskTimer(plugin, 5, 4).getTaskId(); // Update every second (20 ticks)
             
 
@@ -169,6 +224,12 @@ public class StarboardGuitar {
     }
     public void setstrandNumb(int string) {
         strandNum = string;
+    }
+    public int starCount() {
+        return starCount;
+    }
+    public void setStarCount(int star) {
+        starCount = star;
     }
 
 }

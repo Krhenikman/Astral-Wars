@@ -32,7 +32,7 @@ public class CustomMob implements Listener{
     private double scale;
     private double movementSpeed;
     private double attackSpeed;
-    
+    private double knockbackResistance;
 
     public static Plugin plugin = Plugin.getInstance();
     //public static NamespacedKey key4 = new NamespacedKey(plugin, "GENERIC_NAME");
@@ -43,7 +43,7 @@ public class CustomMob implements Listener{
 
     }
 
-    public CustomMob(Player playerSent,Location loc, EntityType mobType, String mobName, ItemStack helm, ItemStack chest, ItemStack leg, ItemStack shoes, double mobHealth, double mobAttackDamage, double mobScale, double mobMovementSpeed, double mobAttackSpeed) {
+    public CustomMob(Player playerSent,Location loc, EntityType mobType, String mobName, ItemStack helm, ItemStack chest, ItemStack leg, ItemStack shoes, double mobHealth, double mobAttackDamage, double mobScale, double mobMovementSpeed, double mobAttackSpeed, double knockBackRes) {
 
         player = playerSent;
         location = loc;
@@ -54,6 +54,7 @@ public class CustomMob implements Listener{
         scale = mobScale;
         movementSpeed = mobMovementSpeed;
         attackSpeed = mobAttackSpeed;
+        knockbackResistance = knockBackRes;
         helmet = helm;
         chestplate = chest;
         leggings = leg;
@@ -87,6 +88,7 @@ public class CustomMob implements Listener{
             setAttribute(customEntity, Attribute.GENERIC_SCALE, scale); //standard damage
             setAttribute(customEntity, Attribute.GENERIC_MOVEMENT_SPEED, movementSpeed); //standard damage
             setAttribute(customEntity, Attribute.GENERIC_SAFE_FALL_DISTANCE, 1000);
+            setAttribute(customEntity, Attribute.GENERIC_KNOCKBACK_RESISTANCE, knockbackResistance);
             //setAttribute(customEntity, Attribute.GENERIC_ATTACK_DAMAGE, attackDamage); //standard damage
             //AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "customDamageModifier", 100, AttributeModifier.Operation.ADD_NUMBER);
             //attributeInstance.addModifier(modifier);

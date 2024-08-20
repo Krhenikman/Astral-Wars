@@ -340,9 +340,17 @@ public class Weapons {
         
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("§cMagma Helmet");
+
+
+        PersistentDataContainer dataContainer3 = meta.getPersistentDataContainer();
+        dataContainer3.set(key4, PersistentDataType.DOUBLE, 20.0);
+        PersistentDataContainer dataContainer4 = meta.getPersistentDataContainer();
+        dataContainer4.set(key5, PersistentDataType.DOUBLE, 10.0);
+
         meta.setUnbreakable(true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
         item.setItemMeta(meta);
         magmahelmet = item;
     }
